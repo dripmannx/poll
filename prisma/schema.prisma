@@ -3,16 +3,38 @@
 
 generator client {
     provider = "prisma-client-js"
-    previewFeatures = ["jsonProtocol"]
 }
 
 datasource db {
-    provider = "sqlite"
-    url      = env("DATABASE_URL")
+    provider     = "mysql"
+    url          = env("DATABASE_URL")
+    relationMode = "prisma"
 }
 
-model Example {
-    id        String   @id @default(cuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+model Poll {
+    id       String   @id @default(cuid())
+    question String
+    choices  Choice[]
+}
+
+model Choice {
+    id         Int    @id @default(autoincrement())
+    poll       Poll   @relation(fields: [pollId], references: [id])
+    pollId     String
+    choiceText String
+    votes      Vote[]
+
+    @@index([pollId])
+}
+
+model Vote {
+    id       Int    @id @default(autoincrement())
+    choice   Choice @relation(fields: [choiceId], references: [id])
+    choiceId Int
+    userId   String
+
+    votedAt DateTime @default(now())
+
+    @@index([userId])
+    @@index([choiceId])
 }
