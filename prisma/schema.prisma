@@ -15,6 +15,7 @@ model Poll {
     id       String   @id @default(cuid())
     question String
     choices  Choice[]
+    public   Boolean
 }
 
 model Choice {
@@ -28,12 +29,11 @@ model Choice {
 }
 
 model Vote {
-    id       Int    @id @default(autoincrement())
-    choice   Choice @relation(fields: [choiceId], references: [id])
+    id       Int      @id @default(autoincrement())
+    choice   Choice   @relation(fields: [choiceId], references: [id])
     choiceId Int
     userId   String
-
-    votedAt DateTime @default(now())
+    votedAt  DateTime @default(now())
 
     @@index([userId])
     @@index([choiceId])
