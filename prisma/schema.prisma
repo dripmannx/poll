@@ -12,10 +12,17 @@ datasource db {
 }
 
 model Poll {
-    id       String   @id @default(cuid())
-    question String
-    choices  Choice[]
-    public   Boolean
+    id         String   @id @default(cuid())
+    link       String
+    question   String
+    choices    Choice[]
+    public     Boolean
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @default(now()) @updatedAt
+    expiredAt  DateTime
+    willExpire Boolean  @default(false)
+
+    @@index([createdAt])
 }
 
 model Choice {
