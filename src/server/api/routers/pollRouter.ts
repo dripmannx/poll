@@ -23,7 +23,6 @@ export const pollRouter = createTRPCRouter({
     .input(
       z.object({
         question: z.string(),
-
         expire: z.date().optional(),
         choices: z.object({ choicesText: z.string() }).array(),
       })
