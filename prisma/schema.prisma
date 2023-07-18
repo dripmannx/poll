@@ -13,7 +13,7 @@ datasource db {
 
 model Poll {
     id         String   @id @default(cuid())
-    link       String
+    link       String   @unique
     question   String
     choices    Choice[]
     public     Boolean
