@@ -16,7 +16,8 @@ export const pollRouter = createTRPCRouter({
 
     .query(({ ctx, input }) => {
       return ctx.prisma.poll.findUniqueOrThrow({
-        where: { id: input.id },
+        where: { link: input.id },
+        include: { choices: { include: { votes: true } } },
       });
     }),
   createPoll: publicProcedure
@@ -25,6 +26,7 @@ export const pollRouter = createTRPCRouter({
         question: z.string(),
         expire: z.date().optional(),
         choices: z.object({ choicesText: z.string() }).array(),
+        discription: z.string().optional(),
       })
     )
     .output(
@@ -44,6 +46,7 @@ export const pollRouter = createTRPCRouter({
           link: createdLink,
           question: input.question,
           public: true,
+          discription: input.discription || "",
           expiredAt: input.expire ? input.expire : b.toDate(),
           willExpire: input.expire ? false : true,
           choices: {
