@@ -29,9 +29,9 @@ const PollResults = () => {
 
   return (
     <>
-      <div className="container mt-5" key={vote.id}>
+      <div className="container mt-5">
         {data?.map((vote) => (
-          <Card className=" ">
+          <Card key={vote.id} className=" ">
             <CardHeader>
               <CardTitle>{vote.question} </CardTitle>
               <CardDescription>{vote.discription} </CardDescription>
