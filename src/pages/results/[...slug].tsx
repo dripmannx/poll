@@ -1,6 +1,3 @@
-import { IdCardIcon } from "@radix-ui/react-icons";
-import { map } from "@trpc/server/observable";
-import { ArcElement, Chart as ChartJS } from "chart.js";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { useRouter } from "next/router";
@@ -15,8 +12,7 @@ import {
 } from "~/components/ui/card";
 import { api } from "~/utils/api";
 import { Poll } from "~/utils/types";
-import { getTotalVotes } from "../profile/my-polls";
-ChartJS.register(ArcElement);
+
 dayjs.extend(relativeTime);
 
 const PollResults = () => {
