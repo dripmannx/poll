@@ -29,8 +29,8 @@ const PollResults = () => {
 
   return (
     <>
-      {data?.map((vote) => (
-        <div className="container mt-5" key={vote.id}>
+      <div className="container mt-5" key={vote.id}>
+        {data?.map((vote) => (
           <Card className=" ">
             <CardHeader>
               <CardTitle>{vote.question} </CardTitle>
@@ -42,8 +42,8 @@ const PollResults = () => {
             </CardHeader>{" "}
             <ChartComp poll={data} />
           </Card>
-        </div>
-      ))}
+        ))}{" "}
+      </div>
     </>
   );
 };
