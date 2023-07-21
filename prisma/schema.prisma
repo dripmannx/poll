@@ -17,17 +17,19 @@ model Poll {
     discription String   @default("")
     question    String
     choices     Choice[]
-    public      Boolean
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @default(now()) @updatedAt
-    expiredAt   DateTime
-    willExpire  Boolean  @default(false)
+
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @default(now()) @updatedAt
+    expiredAt  DateTime
+    willExpire Boolean  @default(false)
+    userId     String
+    Vote       Vote[]
 
     @@index([createdAt])
 }
 
 model Choice {
-    id         Int    @id @default(autoincrement())
+    id         String @id @default(cuid())
     poll       Poll   @relation(fields: [pollId], references: [id])
     pollId     String
     choiceText String
@@ -37,12 +39,15 @@ model Choice {
 }
 
 model Vote {
-    id       Int      @id @default(autoincrement())
+    id       String   @id @default(cuid())
     choice   Choice   @relation(fields: [choiceId], references: [id])
-    choiceId Int
+    choiceId String
     userId   String
     votedAt  DateTime @default(now())
+    poll     Poll     @relation(fields: [pollId], references: [id])
+    pollId   String
 
+    @@index([pollId])
     @@index([userId])
     @@index([choiceId])
 }
