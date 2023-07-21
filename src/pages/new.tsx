@@ -120,7 +120,7 @@ export default function NewPoll() {
         </CardHeader>
         <CardContent>
           {isLoading ? (
-            <BounceLoader />
+            <BounceLoader color="white" />
           ) : (
             <Form {...form}>
               <form

@@ -122,7 +122,7 @@ const Poll = (props: Props) => {
           <CardContent>
             {getPollLoading ? (
               <div className="flex justify-center">
-                <BarLoader />
+                <BarLoader color="white" />
               </div>
             ) : (
               <Form {...form}>
