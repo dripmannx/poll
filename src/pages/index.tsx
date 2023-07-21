@@ -1,10 +1,17 @@
 import { ArrowRightIcon } from "@radix-ui/react-icons";
+import { Metadata } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { Button } from "~/components/ui/button";
 import { MainNav } from "~/components/ui/main-nav";
 import { UserNav } from "~/components/ui/user-nav";
+
+export const metadata: Metadata = {
+  title: "Poll App",
+  description: "Erstellen und Teilen Sie Umfragen kinderleicht",
+};
+
 const LandingPage = () => {
   return (
     <div>
