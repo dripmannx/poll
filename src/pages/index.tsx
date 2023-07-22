@@ -14,7 +14,16 @@ export const metadata: Metadata = {
 
 const LandingPage = () => {
   return (
-    <div>
+    <>
+      <meta property="og:title" content="Umfrage App" />
+      <meta property="og:type" content="website" />
+      <meta property="og:url" content="http://dripmann.de" />
+
+      <meta
+        property="og:description"
+        content="Erstellen und Teilen Sie Umfragen kinderleicht"
+      />
+
       <Head>
         <title>Erstellen und Teilen Sie Umfragen</title>
       </Head>
@@ -74,7 +83,7 @@ const LandingPage = () => {
           </div>
         </section>
       </main>
-    </div>
+    </>
   );
 };
 
