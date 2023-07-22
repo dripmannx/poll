@@ -17,7 +17,7 @@ const LandingPage = () => {
     <>
       <meta property="og:title" content="Umfrage App" />
       <meta property="og:type" content="website" />
-      <meta property="og:url" content="http://dripmann.de" />
+      <meta property="og:url" content="https://dripmann.de" />
 
       <meta
         property="og:description"
