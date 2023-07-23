@@ -11,6 +11,7 @@ import {
   CardTitle,
 } from "~/components/ui/card";
 import { Skeleton } from "~/components/ui/skeleton";
+
 import { api } from "~/utils/api";
 import { Poll } from "~/utils/types";
 
@@ -21,11 +22,12 @@ const PollResults = () => {
   const slug = router.query.slug || [];
   const id = slug[0] as string;
 
-  const { data } = api.pollRouter.getVotesByPollId.useQuery(
+  const { data, isLoading } = api.pollRouter.getVotesByPollId.useQuery(
     { pollId: id },
     { enabled: id ? true : false, retry: false }
   );
-  if (data) {
+  if (isLoading) {
+    <BarLoader />;
   }
 
   return (
