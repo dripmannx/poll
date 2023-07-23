@@ -3,13 +3,14 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { Chart } from "react-google-charts";
-import { CircleLoader } from "react-spinners";
+import { BarLoader, CircleLoader } from "react-spinners";
 import {
   Card,
   CardDescription,
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
+import { Skeleton } from "~/components/ui/skeleton";
 import { api } from "~/utils/api";
 import { Poll } from "~/utils/types";
 
@@ -37,7 +38,7 @@ const PollResults = () => {
               <CardDescription>{vote.discription} </CardDescription>
               <CardDescription>
                 {vote.choices.length} Antwort Möglichkeiten ·{" "}
-                {dayjs().to(vote.createdAt)} ·{" "}
+                {dayjs().to(vote.createdAt)}
               </CardDescription>
             </CardHeader>{" "}
             <ChartComp poll={data} />
@@ -79,11 +80,7 @@ const ChartComp = ({ poll }: IChartComp) => {
       <div>
         <Chart
           chartType="PieChart"
-          loader={
-            <div>
-              <CircleLoader />
-            </div>
-          }
+          loader={<Skeleton className=" rounded-full"></Skeleton>}
           data={[["Task", "Hours per Day"], ...result]}
           options={options}
           width={"100%"}
