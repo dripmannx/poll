@@ -112,7 +112,7 @@ const Poll = (props: Props) => {
       <div className="container mt-5 ">
         <Card
           className={`text-2xl ${
-            pollError || mutateError ? "border-red-500" : null
+            pollError || mutateError ? "border-destructive" : null
           }`}
         >
           <CardHeader>

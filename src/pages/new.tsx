@@ -132,7 +132,7 @@ export default function NewPoll() {
                   name="question"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Titel</FormLabel>
+                      <FormLabel>Titel der Umfrage</FormLabel>
                       <FormControl>
                         <Input label="" placeholder="Titel" {...field} />
                       </FormControl>

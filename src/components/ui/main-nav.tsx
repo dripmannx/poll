@@ -1,11 +1,14 @@
 import Link from "next/link";
 
+import { useRouter } from "next/router";
 import * as React from "react";
 import { cn } from "../../utils/utils";
 export function MainNav({
   className,
   ...props
 }: React.HTMLAttributes<HTMLElement>) {
+  const router = useRouter();
+  console.log(router.pathname);
   return (
     <nav
       className={cn(
@@ -14,17 +17,25 @@ export function MainNav({
       )}
       {...props}
     >
-      <div className="flex items-center"></div>
-
       <Link
         href="/"
-        className=" flex h-full text-center text-sm font-medium transition-colors hover:border-b-2 hover:border-black hover:text-primary dark:hover:border-white"
+        className={cn(
+          " flex h-full items-center text-center text-sm font-medium transition-colors hover:border-b-2 hover:border-black hover:text-primary dark:hover:border-white",
+          router.pathname === "/"
+            ? " border-b-2 border-black dark:border-white"
+            : ""
+        )}
       >
-        <span className="m-auto">Entdecken</span>
+        <span className="m-auto ">Entdecken</span>
       </Link>
       <Link
         href="/new"
-        className=" flex h-full text-center text-sm font-medium transition-colors hover:border-b-2 hover:border-black hover:text-primary dark:hover:border-white"
+        className={cn(
+          " flex h-full items-center text-center text-sm font-medium transition-colors hover:border-b-2 hover:border-black hover:text-primary dark:hover:border-white",
+          router.pathname === "/new"
+            ? " border-b-2 border-black dark:border-white"
+            : ""
+        )}
       >
         <span className="m-auto">Erstellen</span>
       </Link>
