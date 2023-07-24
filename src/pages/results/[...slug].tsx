@@ -1,3 +1,4 @@
+import { Cross2Icon } from "@radix-ui/react-icons";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { useRouter } from "next/router";
@@ -6,15 +7,21 @@ import { Chart } from "react-google-charts";
 import { BarLoader, CircleLoader } from "react-spinners";
 import {
   Card,
+  CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
+import { Input } from "~/components/ui/input";
 import { Skeleton } from "~/components/ui/skeleton";
 
+import { CheckCheckIcon } from "lucide-react";
+import { AiOutlineCheck } from "react-icons/ai";
+import { BiSolidCalendarEdit } from "react-icons/bi";
+import { BsClipboard2 } from "react-icons/bs";
+import { toast } from "~/components/ui/use-toast";
 import { api } from "~/utils/api";
 import { Poll } from "~/utils/types";
-
 dayjs.extend(relativeTime);
 
 const PollResults = () => {
@@ -32,19 +39,30 @@ const PollResults = () => {
 
   return (
     <>
-      <div className="container mt-5">
+      <div className="container mt-5 ">
         {data?.map((vote) => (
-          <Card key={vote.id} className=" ">
-            <CardHeader>
-              <CardTitle>{vote.question} </CardTitle>
-              <CardDescription>{vote.discription} </CardDescription>
-              <CardDescription>
-                {vote.choices.length} Antwort Möglichkeiten ·{" "}
-                {dayjs().to(vote.createdAt)}
-              </CardDescription>
-            </CardHeader>{" "}
-            <ChartComp poll={data} />
-          </Card>
+          <>
+            <Card key={vote.id} className=" ">
+              <CardHeader>
+                <CardTitle>{vote.question} </CardTitle>
+                <CardDescription>{vote.discription} </CardDescription>
+                <CardDescription>
+                  {vote.choices.length} Antwort Möglichkeiten ·{" "}
+                  {dayjs().to(vote.createdAt)}
+                </CardDescription>
+              </CardHeader>{" "}
+              <ChartComp poll={data} />
+            </Card>
+            <Card className="mt-5">
+              <CardHeader>
+                <CardTitle>Teilen</CardTitle>
+                <CardDescription>Teile die Umfrage</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ClipBoard linkToCopy={`https://dripmann.de/${vote.link}`} />{" "}
+              </CardContent>
+            </Card>
+          </>
         ))}{" "}
       </div>
     </>
@@ -91,3 +109,49 @@ const ChartComp = ({ poll }: IChartComp) => {
       </div>
     );
 };
+
+interface IClipBoardProps {
+  linkToCopy: string;
+}
+export function ClipBoard({ linkToCopy }: IClipBoardProps) {
+  const [isCopied, setIsCopied] = useState(false);
+
+  const handleCopyClick = async () => {
+    try {
+      await navigator.clipboard.writeText(linkToCopy);
+      toast({
+        duration: 3000,
+        title: "Link Kopiert",
+      });
+      setIsCopied(true);
+      setTimeout(() => {
+        setIsCopied(false);
+      }, 3000);
+    } catch (error) {
+      console.error("Error copying link:", error);
+    }
+  };
+
+  return (
+    <div className="relative ">
+      <Input
+        onClick={handleCopyClick}
+        value={linkToCopy}
+        readOnly
+        label=""
+        type="text"
+        className="h-12 w-full rounded-md border py-2  pr-2"
+      />
+
+      <button
+        type="button"
+        className="absolute right-0 top-0 h-full p-2 text-gray-400 hover:text-gray-600"
+      >
+        <div className="rounded-sm p-2 hover:bg-accent">
+          {" "}
+          {isCopied ? <AiOutlineCheck /> : <BsClipboard2 />}
+        </div>
+      </button>
+    </div>
+  );
+}
