@@ -20,13 +20,13 @@ export function MainNav({
       <Link
         href="/"
         className={cn(
-          " flex h-full items-center text-center text-sm font-medium transition-colors hover:border-b-2 hover:border-black hover:text-primary dark:hover:border-white",
+          " group  flex h-full items-center text-center text-sm font-medium transition-colors hover:border-b-2 hover:border-black hover:text-primary dark:hover:border-white",
           router.pathname === "/"
             ? " border-b-2 border-black dark:border-white"
             : ""
         )}
       >
-        <span className="m-auto ">Entdecken</span>
+        <span className="m-auto">Entdecken</span>
       </Link>
       <Link
         href="/new"
