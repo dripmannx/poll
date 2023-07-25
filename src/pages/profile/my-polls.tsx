@@ -1,6 +1,7 @@
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -36,6 +37,8 @@ dayjs.extend(relativeTime);
 // In component:
 
 const MyPolls = (props: Props) => {
+  const { theme } = useTheme();
+  const spinnerColor = theme === "light" ? "#09090b" : "#fff";
   const utils = api.useContext();
   const deletePoll = api.pollRouter.deletePoll.useMutation({
     onSuccess(data, variables, context) {
@@ -78,7 +81,12 @@ const MyPolls = (props: Props) => {
 
   return (
     <div className="container mt-5">
-      {data?.length === 0 && <NoPolls />} {isLoading && <BarLoader />}
+      {isLoading && (
+        <div className="flex justify-center ">
+          <BarLoader color={spinnerColor} />
+        </div>
+      )}
+      {data?.length === 0 && <NoPolls />}{" "}
       <div className=" grid grid-cols-3 gap-4">
         {data?.map((item) => (
           <Card
