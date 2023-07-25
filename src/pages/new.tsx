@@ -34,7 +34,7 @@ import {
 import { Input } from "~/components/ui/input";
 import { api } from "~/utils/api";
 
-import { MinusIcon } from "lucide-react";
+import { Check, MinusIcon } from "lucide-react";
 import { BounceLoader } from "react-spinners";
 import { Label } from "~/components/ui/label";
 import {
@@ -42,6 +42,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "~/components/ui/popover";
+import Spinner, { LoadingSpinner } from "~/components/ui/spinner";
 import { Switch } from "~/components/ui/switch";
 import { Textarea } from "~/components/ui/textarea";
 import { toast } from "~/components/ui/use-toast";
@@ -64,6 +65,7 @@ export default function NewPoll() {
   // ...
 
   const router = useRouter();
+  const [isSuccess, setIsSuccess] = useState(false);
   const [willExpireState, setWillExpireState] = useState(false);
   const [hasDiscription, setHasDiscription] = useState(false);
   const [inputs, setInputs] = useState<string[]>([""]);
@@ -80,10 +82,15 @@ export default function NewPoll() {
     },
   });
   const { mutate, data, isLoading } = api.pollRouter.createPoll.useMutation({
-    onSuccess: async () => {
+    onSuccess: async (result) => {
       toast({
-        title: "Umfrage erstellt",
+        title: "Umfrage erfolgreich erstellet",
+        description: "Frage: " + result.question,
       });
+      setTimeout(() => {
+        setIsSuccess(true);
+      }, 3000);
+      return router.push(`/${result.link}`);
     },
   });
   useEffect(() => {
@@ -92,14 +99,6 @@ export default function NewPoll() {
       inputs.map((choicesText) => ({ choicesText }))
     );
     //Push to Link if poll is Created
-
-    if (data) {
-      toast({
-        title: "Umfrage erfolgreich erstellet",
-        description: "Frage: " + data.question,
-      });
-      router.push(`/${data?.link}`);
-    }
   }, [inputs, data]);
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
@@ -120,7 +119,7 @@ export default function NewPoll() {
         </CardHeader>
         <CardContent>
           {isLoading ? (
-            <BounceLoader color="white" />
+            <Spinner />
           ) : (
             <Form {...form}>
               <form
@@ -265,7 +264,13 @@ export default function NewPoll() {
                 <CardFooter className=" p-0">
                   <>
                     <div className="flex gap-2">
-                      <Button className="flex gap-2" type="submit">
+                      <Button
+                        disabled={isLoading || isSuccess}
+                        className="flex gap-2"
+                        type="submit"
+                      >
+                        {isLoading && <LoadingSpinner />}
+                        {isSuccess && <Check color="black" />}
                         Umfrage erstellen
                       </Button>
                     </div>
