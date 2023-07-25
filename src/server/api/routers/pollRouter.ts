@@ -129,7 +129,7 @@ export const pollRouter = createTRPCRouter({
         },
       });
 
-      return { id: input.id };
+      return { id: poll.link };
     }),
 
   getVotesByPollId: privateProcedure

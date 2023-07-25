@@ -15,6 +15,7 @@ import {
 import { Input } from "~/components/ui/input";
 import { Skeleton } from "~/components/ui/skeleton";
 
+import "dayjs/locale/de";
 import { CheckCheckIcon } from "lucide-react";
 import { AiOutlineCheck } from "react-icons/ai";
 import { BiSolidCalendarEdit } from "react-icons/bi";
@@ -24,7 +25,7 @@ import { toast } from "~/components/ui/use-toast";
 import { api } from "~/utils/api";
 import { Poll } from "~/utils/types";
 dayjs.extend(relativeTime);
-
+dayjs.locale("de");
 const PollResults = () => {
   const router = useRouter();
   const slug = router.query.slug || [];

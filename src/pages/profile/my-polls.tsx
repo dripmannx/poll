@@ -5,6 +5,7 @@ import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import { BiPoll } from "react-icons/bi";
 import { FaExternalLinkAlt } from "react-icons/fa";
 
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
@@ -24,6 +25,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
@@ -34,7 +36,7 @@ import { api } from "~/utils/api";
 import { Poll } from "~/utils/types";
 type Props = {};
 dayjs.extend(relativeTime);
-
+dayjs.locale("de");
 // In component:
 
 const MyPolls = (props: Props) => {
@@ -42,6 +44,10 @@ const MyPolls = (props: Props) => {
   const deletePoll = api.pollRouter.deletePoll.useMutation({
     onSuccess(data, variables, context) {
       utils.pollRouter.getPollByUserId.invalidate();
+      toast({
+        title: "Umfrage gelöscht",
+        description: "Die Umfrage wurde erfolgreich gelöscht",
+      });
     },
   });
   const [showIcon, setShowIcon] = useState(false);
@@ -117,6 +123,9 @@ const MyPolls = (props: Props) => {
               <CardDescription>
                 Gesamt Votes {getTotalVotes(item)}
               </CardDescription>
+            </CardContent>
+            <CardFooter className="flex gap-2">
+              {" "}
               <DeleteDialog
                 action={(
                   e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -125,7 +134,14 @@ const MyPolls = (props: Props) => {
                   deletePoll.mutate({ pollId: item.id });
                 }}
               />
-            </CardContent>
+              <Link href={`/results/${item.link}`}>
+                {" "}
+                <Button className=" gap-2" variant={"outline"} type="submit">
+                  <BiPoll />
+                  Ergebnisse
+                </Button>
+              </Link>
+            </CardFooter>
           </Card>
         ))}
       </div>

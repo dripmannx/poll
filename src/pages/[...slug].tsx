@@ -70,11 +70,11 @@ const Poll = (props: Props) => {
     isError: mutateIsError,
     error: mutateError,
   } = api.pollRouter.createVote.useMutation({
-    onSuccess: async () => {
+    onSuccess: async (result) => {
       toast({
         title: "Du hast erfolgreich abgestimmt",
       });
-      router.push(`/results/${data?.id}`);
+      router.push(`/results/${result.id}`);
     },
   });
   function onSubmit(values: z.infer<typeof FormSchema>) {
