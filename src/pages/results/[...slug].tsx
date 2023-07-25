@@ -19,6 +19,7 @@ import { CheckCheckIcon } from "lucide-react";
 import { AiOutlineCheck } from "react-icons/ai";
 import { BiSolidCalendarEdit } from "react-icons/bi";
 import { BsClipboard2 } from "react-icons/bs";
+import Spinner from "~/components/ui/spinner";
 import { toast } from "~/components/ui/use-toast";
 import { api } from "~/utils/api";
 import { Poll } from "~/utils/types";
@@ -33,13 +34,11 @@ const PollResults = () => {
     { pollId: id },
     { enabled: id ? true : false, retry: false }
   );
-  if (isLoading) {
-    <BarLoader />;
-  }
 
   return (
     <>
       <div className="container mt-5 ">
+        {isLoading && <Spinner />}
         {data?.map((vote) => (
           <>
             <Card key={vote.id} className=" ">
