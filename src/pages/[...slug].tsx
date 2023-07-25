@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { BiPoll } from "react-icons/bi";
-import { BarLoader } from "react-spinners";
+
 import { z } from "zod";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import { Button } from "~/components/ui/button";
@@ -31,6 +31,7 @@ import {
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
+import Spinner from "~/components/ui/spinner";
 import { toast } from "~/components/ui/use-toast";
 import { api } from "~/utils/api";
 type Props = { id: string };
@@ -124,7 +125,7 @@ const Poll = (props: Props) => {
           <CardContent>
             {getPollLoading ? (
               <div className="flex justify-center">
-                <BarLoader color="white" />
+                <Spinner />
               </div>
             ) : (
               <Form {...form}>

@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { FaExternalLinkAlt } from "react-icons/fa";
-import { BarLoader } from "react-spinners";
+
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import {
   AlertDialog,
@@ -28,6 +28,7 @@ import {
   CardTitle,
 } from "~/components/ui/card";
 import { Skeleton } from "~/components/ui/skeleton";
+import Spinner from "~/components/ui/spinner";
 import { toast } from "~/components/ui/use-toast";
 import { api } from "~/utils/api";
 import { Poll } from "~/utils/types";
@@ -37,8 +38,6 @@ dayjs.extend(relativeTime);
 // In component:
 
 const MyPolls = (props: Props) => {
-  const { theme } = useTheme();
-  const spinnerColor = theme === "light" ? "#09090b" : "#fff";
   const utils = api.useContext();
   const deletePoll = api.pollRouter.deletePoll.useMutation({
     onSuccess(data, variables, context) {
@@ -81,11 +80,7 @@ const MyPolls = (props: Props) => {
 
   return (
     <div className="container mt-5">
-      {isLoading && (
-        <div className="flex justify-center ">
-          <BarLoader color={spinnerColor} />
-        </div>
-      )}
+      {isLoading && <Spinner />}
       {data?.length === 0 && <NoPolls />}{" "}
       <div className=" grid grid-cols-3 gap-4">
         {data?.map((item) => (
