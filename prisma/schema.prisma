@@ -29,7 +29,7 @@ model Poll {
 
 model Choice {
     id         String @id @default(cuid())
-    poll       Poll   @relation(fields: [pollId], references: [id])
+    poll       Poll   @relation(fields: [pollId], references: [id], onDelete: Cascade, onUpdate: Cascade)
     pollId     String
     choiceText String
     votes      Vote[]
@@ -39,11 +39,11 @@ model Choice {
 
 model Vote {
     id       String   @id @default(cuid())
-    choice   Choice   @relation(fields: [choiceId], references: [id])
+    choice   Choice   @relation(fields: [choiceId], references: [id], onDelete: Cascade, onUpdate: Cascade)
     choiceId String
     userId   String
     votedAt  DateTime @default(now())
-    poll     Poll     @relation(fields: [pollId], references: [id])
+    poll     Poll     @relation(fields: [pollId], references: [id], onDelete: Cascade, onUpdate: Cascade)
     pollId   String
 
     @@index([pollId])

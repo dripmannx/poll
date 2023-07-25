@@ -147,4 +147,32 @@ export const pollRouter = createTRPCRouter({
           });
         });
     }),
+  deletePoll: privateProcedure
+    .input(
+      z.object({
+        pollId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const isCreator = ctx.prisma.vote.findFirst({
+        where: { pollId: input.pollId, userId: ctx.userId },
+      });
+      if (!isCreator) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Du bist nicht der Creator der Umfrage",
+        });
+      }
+      const deletePoll = ctx.prisma.poll.delete({
+        where: { id: input.pollId },
+        include: { choices: { include: { votes: true } } },
+      });
+
+      return await ctx.prisma.$transaction([deletePoll]).catch((err) => {
+        throw new TRPCError({
+          message: "Löschen fehlgeschlagen",
+          code: "INTERNAL_SERVER_ERROR",
+        });
+      });
+    }),
 });

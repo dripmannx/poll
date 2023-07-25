@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Checkbox } from "@radix-ui/react-checkbox";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
+import { link } from "fs";
 import Head from "next/head";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -72,6 +73,7 @@ const Poll = (props: Props) => {
       toast({
         title: "Du hast erfolgreich abgestimmt",
       });
+      router.push(`/results/${data?.id}`);
     },
   });
   function onSubmit(values: z.infer<typeof FormSchema>) {

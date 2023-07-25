@@ -8,7 +8,7 @@ export function MainNav({
   ...props
 }: React.HTMLAttributes<HTMLElement>) {
   const router = useRouter();
-  console.log(router.pathname);
+
   return (
     <nav
       className={cn(
