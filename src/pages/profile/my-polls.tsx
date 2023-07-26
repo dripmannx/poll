@@ -1,7 +1,6 @@
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -29,17 +28,14 @@ import {
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
-import { Skeleton } from "~/components/ui/skeleton";
 import Spinner from "~/components/ui/spinner";
 import { toast } from "~/components/ui/use-toast";
 import { api } from "~/utils/api";
 import { Poll } from "~/utils/types";
-type Props = {};
-dayjs.extend(relativeTime);
-dayjs.locale("de");
-// In component:
 
-const MyPolls = (props: Props) => {
+dayjs.extend(relativeTime);
+
+const MyPolls = () => {
   const utils = api.useContext();
   const deletePoll = api.pollRouter.deletePoll.useMutation({
     onSuccess(data, variables, context) {

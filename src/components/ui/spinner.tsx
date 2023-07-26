@@ -1,6 +1,6 @@
 import { useTheme } from "next-themes";
+import React from "react";
 import { BarLoader } from "react-spinners";
-
 const Spinner = () => {
   const { theme } = useTheme();
   const spinnerColor = theme === "light" ? "#09090b" : "#fff";

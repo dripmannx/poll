@@ -1,10 +1,8 @@
-import { Cross2Icon } from "@radix-ui/react-icons";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { Chart } from "react-google-charts";
-import { BarLoader, CircleLoader } from "react-spinners";
 import {
   Card,
   CardContent,
@@ -16,9 +14,7 @@ import { Input } from "~/components/ui/input";
 import { Skeleton } from "~/components/ui/skeleton";
 
 import "dayjs/locale/de";
-import { CheckCheckIcon } from "lucide-react";
 import { AiOutlineCheck } from "react-icons/ai";
-import { BiSolidCalendarEdit } from "react-icons/bi";
 import { BsClipboard2 } from "react-icons/bs";
 import Spinner from "~/components/ui/spinner";
 import { toast } from "~/components/ui/use-toast";

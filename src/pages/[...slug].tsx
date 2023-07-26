@@ -1,10 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Checkbox } from "@radix-ui/react-checkbox";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
-import { link } from "fs";
 import Head from "next/head";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -23,13 +20,11 @@ import {
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "~/components/ui/form";
-import { Input } from "~/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
 import Spinner from "~/components/ui/spinner";
 import { toast } from "~/components/ui/use-toast";

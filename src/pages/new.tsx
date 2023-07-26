@@ -1,16 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CalendarIcon, Cross2Icon, PlusIcon } from "@radix-ui/react-icons";
 import { format } from "date-fns";
-import Link from "next/link";
-import { redirect } from "next/navigation";
 import { useRouter } from "next/router";
 import React, { ChangeEvent, useEffect, useState } from "react";
-import {
-  ControllerRenderProps,
-  useFieldArray,
-  useForm,
-  useFormState,
-} from "react-hook-form";
+import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Button } from "~/components/ui/button";
 import { Calendar } from "~/components/ui/calendar";
@@ -35,7 +28,6 @@ import { Input } from "~/components/ui/input";
 import { api } from "~/utils/api";
 
 import { Check, MinusIcon } from "lucide-react";
-import { BounceLoader } from "react-spinners";
 import { Label } from "~/components/ui/label";
 import {
   Popover,
