@@ -130,7 +130,10 @@ const MyPolls = () => {
                   deletePoll.mutate({ pollId: item.id });
                 }}
               />
-              <Link href={`/results/${item.link}`}>
+              <Link
+                href={`/results/${item.link}`}
+                onClick={(e) => e.stopPropagation()}
+              >
                 {" "}
                 <Button className=" gap-2" variant={"outline"} type="submit">
                   <BiPoll />
