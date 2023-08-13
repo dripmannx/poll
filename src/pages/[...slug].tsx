@@ -136,6 +136,7 @@ const Poll = (props: Props) => {
                         <FormLabel>Wähle eine Antwort aus</FormLabel>
                         <FormControl>
                           <RadioGroup
+                            aria-multiselectable
                             onValueChange={field.onChange}
                             defaultValue={field.value}
                             className="flex flex-col space-y-1"

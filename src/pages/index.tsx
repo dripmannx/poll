@@ -78,6 +78,7 @@ const LandingPage = () => {
               </div>
 
               {/* Hero image */}
+              <CheckboxGroupComponent />
             </div>
           </div>
         </section>
@@ -87,3 +88,46 @@ const LandingPage = () => {
 };
 
 export default LandingPage;
+// YourComponent.tsx
+import * as React from "react";
+import {
+  CheckboxGroup,
+  CheckboxGroupItem,
+} from "~/components/ui/CheckboxGroup";
+
+const CheckboxGroupComponent: React.FC = () => {
+  const [selectedItems, setSelectedItems] = React.useState<string[]>([]);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setSelectedItems((prevSelected) =>
+      prevSelected.includes(value)
+        ? prevSelected.filter((item) => item !== value)
+        : [...prevSelected, value]
+    );
+  };
+
+  return (
+    <CheckboxGroup>
+      <CheckboxGroupItem
+        value="item1"
+        label="Item 1"
+        checked={selectedItems.includes("item1")}
+        onChange={handleChange}
+      />
+      <CheckboxGroupItem
+        value="item2"
+        label="Item 2"
+        checked={selectedItems.includes("item2")}
+        onChange={handleChange}
+      />
+      <CheckboxGroupItem
+        value="item3"
+        label="Item 3"
+        checked={selectedItems.includes("item3")}
+        onChange={handleChange}
+      />
+      {/* Add more items here */}
+    </CheckboxGroup>
+  );
+};
