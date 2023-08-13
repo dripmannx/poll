@@ -78,7 +78,7 @@ const LandingPage = () => {
               </div>
 
               {/* Hero image */}
-              <CheckboxGroupComponent />
+              {/*  <CheckboxGroupComponent /> */}
             </div>
           </div>
         </section>
