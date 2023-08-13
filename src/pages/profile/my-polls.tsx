@@ -201,7 +201,7 @@ const NoPolls = () => {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Link href={"/new"}>
+        <Link href={"/create"}>
           <Button>Umfrage erstellen</Button>
         </Link>
       </CardContent>

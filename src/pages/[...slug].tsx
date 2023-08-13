@@ -95,7 +95,7 @@ const Poll = (props: Props) => {
           <ExclamationTriangleIcon className="h-4 w-4" />
           <AlertTitle>Fehler</AlertTitle>
           <AlertDescription>{pollError.message}</AlertDescription>
-          <Button className="mt-5" onClick={() => router.push("/new")}>
+          <Button className="mt-5" onClick={() => router.push("/create")}>
             Neue Umfrage erstellen
           </Button>
         </Alert>

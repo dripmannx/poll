@@ -53,7 +53,7 @@ export const formSchema = z.object({
     .min(2, { message: "Mindestens 2 Antwort Optionen" }),
   expire: z.date().optional(),
 });
-export default function NewPoll() {
+export default function CreatePoll() {
   // ...
 
   const router = useRouter();

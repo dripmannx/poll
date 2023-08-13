@@ -63,7 +63,7 @@ const LandingPage = () => {
                     <div>
                       <Button size={"lg"}>
                         {" "}
-                        <Link href={"/new"} className="flex   gap-2">
+                        <Link href={"/create"} className="flex   gap-2">
                           Umfage erstellen{" "}
                         </Link>
                       </Button>
