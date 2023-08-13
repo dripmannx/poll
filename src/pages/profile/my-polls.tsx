@@ -91,14 +91,12 @@ const MyPolls = () => {
             onClick={() => router.push(`/${item.link}`)}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
-            className="relative  cursor-pointer hover:shadow-lg dark:hover:border-gray-500"
+            className="group  relative cursor-pointer hover:shadow-lg dark:hover:border-gray-500"
           >
             {" "}
-            {showIcon && (
-              <div className="absolute right-0 top-0 -mr-4 -mt-4 rounded-full p-2 shadow-lg dark:bg-white">
-                <FaExternalLinkAlt color="black" />
-              </div>
-            )}
+            <div className="absolute right-0 top-0 -mr-4 -mt-4 hidden rounded-full p-2 shadow-lg hover:flex group-hover:flex dark:bg-white">
+              <FaExternalLinkAlt color="black" />
+            </div>
             <CardHeader>
               <CardTitle>{item.question} </CardTitle>
               <CardDescription>{item.discription} </CardDescription>
