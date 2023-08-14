@@ -35,7 +35,7 @@ const PollResults = () => {
     { pollId: id },
     { enabled: id ? true : false, retry: false }
   );
-  console.log(data);
+
   if (data)
     return (
       <>

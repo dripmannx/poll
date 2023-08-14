@@ -25,6 +25,7 @@ import {
   FormLabel,
   FormMessage,
 } from "~/components/ui/form";
+import NotFound from "~/components/ui/notFound";
 import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
 import Spinner from "~/components/ui/spinner";
 import { toast } from "~/components/ui/use-toast";
@@ -40,7 +41,6 @@ const FormSchema = z.object({
 });
 
 const Poll = (props: Props) => {
-  const [choiceId, setChoiceId] = useState("");
   const [enumOptions, setEnumOptions] = useState<EnumOption[]>([]);
   const router = useRouter();
 
@@ -89,18 +89,7 @@ const Poll = (props: Props) => {
   }, [data]);
 
   if (isError) {
-    return (
-      <div className="container mt-5">
-        <Alert variant="destructive">
-          <ExclamationTriangleIcon className="h-4 w-4" />
-          <AlertTitle>Fehler</AlertTitle>
-          <AlertDescription>{pollError.message}</AlertDescription>
-          <Button className="mt-5" onClick={() => router.push("/create")}>
-            Neue Umfrage erstellen
-          </Button>
-        </Alert>
-      </div>
-    );
+    return <NotFound />;
   }
   return (
     <>
