@@ -60,21 +60,18 @@ const LandingPage = () => {
                     data-aos="zoom-y-out"
                     data-aos-delay="300"
                   >
-                    <div>
-                      <Button size={"lg"}>
-                        {" "}
-                        <Link href={"/create"} className="flex   gap-2">
-                          Umfage erstellen{" "}
-                        </Link>
-                      </Button>
-                    </div>
-                    <div>
-                      <Link href={"/demo"}>
-                        <Button variant={"secondary"} size={"lg"}>
-                          Demo testen
-                        </Button>
+                    <Button size={"lg"}>
+                      {" "}
+                      <Link href={"/create"} className="flex   gap-2">
+                        Umfage erstellen{" "}
                       </Link>
-                    </div>
+                    </Button>
+
+                    <Link href={"/demo"}>
+                      <Button variant={"secondary"} size={"lg"}>
+                        Demo testen
+                      </Button>
+                    </Link>
                   </div>
                 </div>
               </div>
