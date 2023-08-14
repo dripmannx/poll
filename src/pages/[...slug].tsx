@@ -97,11 +97,7 @@ export const Poll = () => {
         <title>{data?.question}</title>
       </Head>
       <div className="container mt-5 ">
-        <Card
-          className={`text-2xl ${
-            pollError || mutateError ? "border-destructive" : null
-          }`}
-        >
+        <Card className={`text-2xl`}>
           <CardHeader>
             <CardTitle>{data?.question}</CardTitle>
             <CardDescription>{data?.discription}</CardDescription>
