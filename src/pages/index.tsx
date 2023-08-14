@@ -69,9 +69,11 @@ const LandingPage = () => {
                       </Button>
                     </div>
                     <div>
-                      <Button variant={"secondary"} size={"lg"}>
-                        Demo testen
-                      </Button>
+                      <Link href={"/demo"}>
+                        <Button variant={"secondary"} size={"lg"}>
+                          Demo testen
+                        </Button>
+                      </Link>
                     </div>
                   </div>
                 </div>

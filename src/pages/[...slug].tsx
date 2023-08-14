@@ -40,7 +40,7 @@ const FormSchema = z.object({
   id: z.string(),
 });
 
-const Poll = (props: Props) => {
+export const Poll = () => {
   const [enumOptions, setEnumOptions] = useState<EnumOption[]>([]);
   const router = useRouter();
 
