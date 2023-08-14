@@ -136,7 +136,7 @@ export const pollRouter = createTRPCRouter({
     .input(z.object({ pollId: z.string() }))
     .query(({ ctx, input }) => {
       return ctx.prisma.poll
-        .findMany({
+        .findUniqueOrThrow({
           where: { link: input.pollId },
           include: { choices: { include: { votes: true } } },
         })

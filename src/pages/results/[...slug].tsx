@@ -13,9 +13,13 @@ import {
 import { Input } from "~/components/ui/input";
 import { Skeleton } from "~/components/ui/skeleton";
 
+import { Choice } from "@prisma/client";
 import "dayjs/locale/de";
 import { AiOutlineCheck } from "react-icons/ai";
 import { BsClipboard2 } from "react-icons/bs";
+import { Label } from "~/components/ui/label";
+import { Progress } from "~/components/ui/progress";
+import { Separator } from "~/components/ui/separator";
 import Spinner from "~/components/ui/spinner";
 import { toast } from "~/components/ui/use-toast";
 import { api } from "~/utils/api";
@@ -31,23 +35,30 @@ const PollResults = () => {
     { pollId: id },
     { enabled: id ? true : false, retry: false }
   );
+  console.log(data);
+  if (data)
+    return (
+      <>
+        <div className="container mt-5 ">
+          {isLoading && <Spinner />}
 
-  return (
-    <>
-      <div className="container mt-5 ">
-        {isLoading && <Spinner />}
-        {data?.map((vote) => (
-          <>
-            <Card key={vote.id} className=" ">
+          <React.Fragment key={data.id}>
+            <Card className="w-full">
               <CardHeader>
-                <CardTitle>{vote.question} </CardTitle>
-                <CardDescription>{vote.discription} </CardDescription>
+                <CardTitle>{data.question} </CardTitle>
+                <CardDescription>{data.discription} </CardDescription>
                 <CardDescription>
-                  {vote.choices.length} Antwort Möglichkeiten ·{" "}
-                  {dayjs().to(vote.createdAt)}
+                  {data.choices?.length} Antwort Möglichkeiten ·{" "}
+                  {dayjs().to(data.createdAt)}
                 </CardDescription>
               </CardHeader>{" "}
-              <ChartComp poll={data} />
+              <CardContent>
+                <div className=" flex flex-col gap-y-5 lg:flex-row">
+                  <BarChart poll={data} />
+
+                  <ChartComp poll={data} />
+                </div>
+              </CardContent>
             </Card>
             <Card className="mt-5">
               <CardHeader>
@@ -55,29 +66,26 @@ const PollResults = () => {
                 <CardDescription>Teile die Umfrage</CardDescription>
               </CardHeader>
               <CardContent>
-                <ClipBoard linkToCopy={`https://dripmann.de/${vote.link}`} />{" "}
+                <ClipBoard linkToCopy={`https://dripmann.de/${data.link}`} />{" "}
               </CardContent>
             </Card>
-          </>
-        ))}{" "}
-      </div>
-    </>
-  );
+          </React.Fragment>
+        </div>
+      </>
+    );
 };
 export default PollResults;
 
 interface IChartComp {
-  poll: Poll[];
+  poll: Poll;
 }
-const createArrayFromObject = (data: Poll[]): Array<[string, number]> => {
+const createArrayFromObject = (data: Poll): Array<[string, number]> => {
   const resultArray: Array<[string, number]> = [["Task", 0]];
 
-  data.forEach((poll) => {
-    poll.choices.forEach((choice) => {
-      const task: string = choice.choiceText;
-      const votes: number = choice.votes.length;
-      resultArray.push([task, votes]);
-    });
+  data.choices.forEach((choice) => {
+    const task: string = choice.choiceText;
+    const votes: number = choice.votes.length;
+    resultArray.push([task, votes]);
   });
 
   return resultArray;
@@ -86,6 +94,7 @@ export const options = {
   pieSliceText: "label",
   legend: "none",
   backgroundColor: "transparent",
+  chartArea: { top: 0, bottom: 0, left: 0, right: 0 },
 };
 
 const ChartComp = ({ poll }: IChartComp) => {
@@ -93,16 +102,15 @@ const ChartComp = ({ poll }: IChartComp) => {
 
   if (result)
     return (
-      <div>
-        <Chart
-          chartType="PieChart"
-          loader={<Skeleton className=" rounded-full"></Skeleton>}
-          data={[["Task", "Hours per Day"], ...result]}
-          options={options}
-          width={"100%"}
-          height={"400px"}
-        />
-      </div>
+      <Chart
+        className="mt-0"
+        chartType="PieChart"
+        loader={<Skeleton className=" w-10 rounded-full"></Skeleton>}
+        data={[["Task", "Hours per Day"], ...result]}
+        options={options}
+        width={"100%"}
+        height={"400px"}
+      />
     );
 };
 
@@ -151,3 +159,46 @@ export function ClipBoard({ linkToCopy }: IClipBoardProps) {
     </div>
   );
 }
+
+type TBarChartProps = {
+  poll: Poll;
+};
+function countTotalVotesInPoll(poll: Poll): number {
+  let totalVotes = 0;
+
+  for (const choice of poll.choices) {
+    totalVotes += choice.votes.length;
+  }
+
+  return totalVotes;
+}
+
+const BarChart = ({ poll }: TBarChartProps) => {
+  const [votesCount, setVotesCount] = useState(countTotalVotesInPoll(poll));
+
+  return (
+    <div className="flex w-full flex-col gap-5">
+      {poll.choices.map((choice) => (
+        <div key={choice.id} className=" flex flex-col gap-2 ">
+          <div className="flex justify-between">
+            <Label>{choice.choiceText}</Label>
+            <Label>
+              {(choice.votes.length / votesCount) * 100}%{" "}
+              {`(${choice.votes.length} Stimmen)`}
+            </Label>
+          </div>
+          <Progress
+            className="h-5"
+            value={(choice.votes.length / votesCount) * 100}
+          >
+            awd
+          </Progress>
+        </div>
+      ))}{" "}
+      <Separator className="mt-2"></Separator>
+      <div className="text-center lg:text-left">
+        Stimmen insgesamt: {votesCount}
+      </div>
+    </div>
+  );
+};

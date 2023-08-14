@@ -25,6 +25,8 @@ model Poll {
     Vote       Vote[]
 
     @@index([createdAt])
+    @@index([link])
+    @@index([userId])
 }
 
 model Choice {
