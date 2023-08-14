@@ -32,7 +32,7 @@ export function MainNav({
         href="/create"
         className={cn(
           " flex h-full items-center text-center text-sm font-medium transition-colors hover:border-b-2 hover:border-black hover:text-primary dark:hover:border-white",
-          router.pathname === "/new"
+          router.pathname === "/create"
             ? " border-b-2 border-black dark:border-white"
             : ""
         )}
