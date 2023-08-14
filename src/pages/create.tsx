@@ -28,6 +28,7 @@ import { Input } from "~/components/ui/input";
 import { api } from "~/utils/api";
 
 import { Check, MinusIcon } from "lucide-react";
+import Head from "next/head";
 import { Label } from "~/components/ui/label";
 import {
   Popover,
@@ -101,179 +102,184 @@ export default function CreatePoll() {
   }
 
   return (
-    <div className="container mt-5 flex  justify-center">
-      <Card className="w-[99%]  ">
-        <CardHeader>
-          <CardTitle>Neue Umfrage erstellen</CardTitle>
-          <CardDescription>
-            Erstelle eine Umfrage um sie zu veröffentlichen{" "}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          {isLoading ? (
-            <Spinner />
-          ) : (
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-8"
-              >
-                <FormField
-                  control={form.control}
-                  name="question"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Titel der Umfrage</FormLabel>
-                      <FormControl>
-                        <Input label="" placeholder="Titel" {...field} />
-                      </FormControl>
-                      <FormDescription>
-                        Dies ist der Titel unter der deine Umfrage
-                        veröffentlicht wird
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                {hasDiscription && (
-                  <FormField
-                    control={form.control}
-                    name="discription"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Beschreibung</FormLabel>
-                        <FormControl>
-                          <Textarea
-                            placeholder="Beschreibung Hinzufügen"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormDescription>
-                          Schreibe eine ausführliche Beschreibung über deine
-                          Umfrage
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                )}
-                <Button
-                  onClick={() => setHasDiscription((state) => !state)}
-                  type="button"
-                  variant={"ghost"}
-                  className="flex gap-2"
+    <>
+      <Head>
+        <title>Neue Umfrage erstellen</title>
+      </Head>
+      <div className="container mt-5 flex  justify-center">
+        <Card className="w-[99%]  ">
+          <CardHeader>
+            <CardTitle>Neue Umfrage erstellen</CardTitle>
+            <CardDescription>
+              Erstelle eine Umfrage um sie zu veröffentlichen{" "}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {isLoading ? (
+              <Spinner />
+            ) : (
+              <Form {...form}>
+                <form
+                  onSubmit={form.handleSubmit(onSubmit)}
+                  className="space-y-8"
                 >
-                  {!hasDiscription ? <PlusIcon /> : <MinusIcon />}
-
-                  {!hasDiscription
-                    ? "Beschreibung hinzufügen"
-                    : "Beschreibung ausblenden"}
-                </Button>
-                <>
                   <FormField
                     control={form.control}
-                    name="choices"
+                    name="question"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Antwort-Optionen</FormLabel>
+                        <FormLabel>Titel der Umfrage</FormLabel>
                         <FormControl>
-                          <DynamicInputs
-                            inputs={inputs}
-                            setInputs={setInputs}
-                          />
+                          <Input label="" placeholder="Titel" {...field} />
                         </FormControl>
                         <FormDescription>
-                          Erstelle die Fragen die die Umfrage enthalten soll
+                          Dies ist der Titel unter der deine Umfrage
+                          veröffentlicht wird
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
 
-                  <div className="flex items-center space-x-2">
-                    <Switch
-                      checked={willExpireState}
-                      id="airplane-mode"
-                      onCheckedChange={() =>
-                        setWillExpireState((state) => !state)
-                      }
-                    />
-                    <Label htmlFor="airplane-mode">
-                      Ablaufdatum festlegen{" "}
-                    </Label>
-                  </div>
-                  {willExpireState && (
+                  {hasDiscription && (
                     <FormField
                       control={form.control}
-                      name="expire"
+                      name="discription"
                       render={({ field }) => (
-                        <FormItem className="flex flex-col">
-                          <FormLabel>Ablaufdatum</FormLabel>
-                          <Popover>
-                            <PopoverTrigger asChild>
-                              <FormControl>
-                                <Button
-                                  variant={"outline"}
-                                  className={cn(
-                                    "w-[240px] pl-3 text-left font-normal",
-                                    !field.value && "text-muted-foreground"
-                                  )}
-                                >
-                                  {field.value ? (
-                                    format(field.value, "PPP")
-                                  ) : (
-                                    <span>Wähle ein Ablaufdatum </span>
-                                  )}
-                                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                                </Button>
-                              </FormControl>
-                            </PopoverTrigger>
-                            <PopoverContent
-                              className="w-auto p-0"
-                              align="start"
-                            >
-                              <Calendar
-                                mode="single"
-                                selected={field.value}
-                                onSelect={field.onChange as any}
-                                disabled={(date: Date) => date < new Date()}
-                                initialFocus
-                              />
-                            </PopoverContent>
-                          </Popover>
+                        <FormItem>
+                          <FormLabel>Beschreibung</FormLabel>
+                          <FormControl>
+                            <Textarea
+                              placeholder="Beschreibung Hinzufügen"
+                              {...field}
+                            />
+                          </FormControl>
                           <FormDescription>
-                            Wähle das Datum, an dem die Umfrage abläuft oder
-                            lasse dieses Feld leer
+                            Schreibe eine ausführliche Beschreibung über deine
+                            Umfrage
                           </FormDescription>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
                   )}
-                </>
+                  <Button
+                    onClick={() => setHasDiscription((state) => !state)}
+                    type="button"
+                    variant={"ghost"}
+                    className="flex gap-2"
+                  >
+                    {!hasDiscription ? <PlusIcon /> : <MinusIcon />}
 
-                <CardFooter className=" p-0">
+                    {!hasDiscription
+                      ? "Beschreibung hinzufügen"
+                      : "Beschreibung ausblenden"}
+                  </Button>
                   <>
-                    <div className="flex gap-2">
-                      <Button
-                        disabled={isLoading || isSuccess}
-                        className="flex gap-2"
-                        type="submit"
-                      >
-                        {isLoading && <LoadingSpinner />}
-                        {isSuccess && <Check color="black" />}
-                        Umfrage erstellen
-                      </Button>
+                    <FormField
+                      control={form.control}
+                      name="choices"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Antwort-Optionen</FormLabel>
+                          <FormControl>
+                            <DynamicInputs
+                              inputs={inputs}
+                              setInputs={setInputs}
+                            />
+                          </FormControl>
+                          <FormDescription>
+                            Erstelle die Fragen die die Umfrage enthalten soll
+                          </FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <div className="flex items-center space-x-2">
+                      <Switch
+                        checked={willExpireState}
+                        id="airplane-mode"
+                        onCheckedChange={() =>
+                          setWillExpireState((state) => !state)
+                        }
+                      />
+                      <Label htmlFor="airplane-mode">
+                        Ablaufdatum festlegen{" "}
+                      </Label>
                     </div>
+                    {willExpireState && (
+                      <FormField
+                        control={form.control}
+                        name="expire"
+                        render={({ field }) => (
+                          <FormItem className="flex flex-col">
+                            <FormLabel>Ablaufdatum</FormLabel>
+                            <Popover>
+                              <PopoverTrigger asChild>
+                                <FormControl>
+                                  <Button
+                                    variant={"outline"}
+                                    className={cn(
+                                      "w-[240px] pl-3 text-left font-normal",
+                                      !field.value && "text-muted-foreground"
+                                    )}
+                                  >
+                                    {field.value ? (
+                                      format(field.value, "PPP")
+                                    ) : (
+                                      <span>Wähle ein Ablaufdatum </span>
+                                    )}
+                                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                  </Button>
+                                </FormControl>
+                              </PopoverTrigger>
+                              <PopoverContent
+                                className="w-auto p-0"
+                                align="start"
+                              >
+                                <Calendar
+                                  mode="single"
+                                  selected={field.value}
+                                  onSelect={field.onChange as any}
+                                  disabled={(date: Date) => date < new Date()}
+                                  initialFocus
+                                />
+                              </PopoverContent>
+                            </Popover>
+                            <FormDescription>
+                              Wähle das Datum, an dem die Umfrage abläuft oder
+                              lasse dieses Feld leer
+                            </FormDescription>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    )}
                   </>
-                </CardFooter>
-              </form>
-            </Form>
-          )}
-        </CardContent>
-      </Card>
-    </div>
+
+                  <CardFooter className=" p-0">
+                    <>
+                      <div className="flex gap-2">
+                        <Button
+                          disabled={isLoading || isSuccess}
+                          className="flex gap-2"
+                          type="submit"
+                        >
+                          {isLoading && <LoadingSpinner />}
+                          {isSuccess && <Check color="black" />}
+                          Umfrage erstellen
+                        </Button>
+                      </div>
+                    </>
+                  </CardFooter>
+                </form>
+              </Form>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+    </>
   );
 }
 interface Props {

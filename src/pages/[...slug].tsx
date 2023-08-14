@@ -105,7 +105,7 @@ const Poll = (props: Props) => {
   return (
     <>
       <Head>
-        <title>Erstellen und Teilen Sie Umfragen</title>
+        <title>{data?.question}</title>
       </Head>
       <div className="container mt-5 ">
         <Card

@@ -1,9 +1,12 @@
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { Metadata } from "next";
+import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+
 import { BiPoll } from "react-icons/bi";
 import { FaExternalLinkAlt } from "react-icons/fa";
 
@@ -34,6 +37,10 @@ import { api } from "~/utils/api";
 import { Poll } from "~/utils/types";
 
 dayjs.extend(relativeTime);
+export const metadata: Metadata = {
+  title: "Meine Umfragen",
+  description: "Hier findest du alle deine Umfragen",
+};
 
 const MyPolls = () => {
   const utils = api.useContext();
@@ -81,68 +88,81 @@ const MyPolls = () => {
   }, [deletePoll.isError]);
 
   return (
-    <div className="container mt-5">
-      {isLoading && <Spinner />}
-      {data?.length === 0 && <NoPolls />}{" "}
-      <div className=" grid grid-cols-3 gap-4">
-        {data?.map((item) => (
-          <Card
-            key={item.id}
-            onClick={() => router.push(`/${item.link}`)}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-            className="group  relative cursor-pointer hover:shadow-lg dark:hover:border-gray-500"
-          >
-            {" "}
-            <div className="absolute right-0 top-0 -mr-4 -mt-4 hidden rounded-full p-2 shadow-lg hover:flex group-hover:flex dark:bg-white">
-              <FaExternalLinkAlt color="black" />
-            </div>
-            <CardHeader>
-              <CardTitle>{item.question} </CardTitle>
-              <CardDescription>{item.discription} </CardDescription>
-              <CardDescription>
-                {item.choices.length} Antwort Möglichkeiten ·{" "}
-                {dayjs().to(item.createdAt)}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              {item.choices.map((choice, index) => (
-                <div key={choice.id} className="flex gap-2 ">
-                  <div>
-                    {index + 1}. {choice.choiceText}{" "}
-                  </div>
-                  · <div>{choice.votes.length} Votes</div>
-                </div>
-              ))}{" "}
-              <CardDescription>
-                Gesamt Votes {getTotalVotes(item)}
-              </CardDescription>
-            </CardContent>
-            <CardFooter className="flex gap-2">
+    <>
+      <Head>
+        {" "}
+        <meta property="og:title" content="Meine Umfragen" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://dripmann.de/" />
+        <meta
+          property="og:description"
+          content="Hier finden Sie alle Umfragen"
+        />
+        <title>Meine Umfragen</title>
+      </Head>
+      <div className="container mt-5">
+        {isLoading && <Spinner />}
+        {data?.length === 0 && <NoPolls />}{" "}
+        <div className=" grid grid-cols-3 gap-4">
+          {data?.map((item) => (
+            <Card
+              key={item.id}
+              onClick={() => router.push(`/${item.link}`)}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              className="group  relative cursor-pointer hover:shadow-lg dark:hover:border-gray-500"
+            >
               {" "}
-              <DeleteDialog
-                action={(
-                  e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-                ) => {
-                  e.stopPropagation();
-                  deletePoll.mutate({ pollId: item.id });
-                }}
-              />
-              <Link
-                href={`/results/${item.link}`}
-                onClick={(e) => e.stopPropagation()}
-              >
+              <div className="absolute right-0 top-0 -mr-4 -mt-4 hidden rounded-full p-2 shadow-lg hover:flex group-hover:flex dark:bg-white">
+                <FaExternalLinkAlt color="black" />
+              </div>
+              <CardHeader>
+                <CardTitle>{item.question} </CardTitle>
+                <CardDescription>{item.discription} </CardDescription>
+                <CardDescription>
+                  {item.choices.length} Antwort Möglichkeiten ·{" "}
+                  {dayjs().to(item.createdAt)}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                {item.choices.map((choice, index) => (
+                  <div key={choice.id} className="flex gap-2 ">
+                    <div>
+                      {index + 1}. {choice.choiceText}{" "}
+                    </div>
+                    · <div>{choice.votes.length} Votes</div>
+                  </div>
+                ))}{" "}
+                <CardDescription>
+                  Gesamt Votes {getTotalVotes(item)}
+                </CardDescription>
+              </CardContent>
+              <CardFooter className="flex gap-2">
                 {" "}
-                <Button className=" gap-2" variant={"outline"} type="submit">
-                  <BiPoll />
-                  Ergebnisse
-                </Button>
-              </Link>
-            </CardFooter>
-          </Card>
-        ))}
+                <DeleteDialog
+                  action={(
+                    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+                  ) => {
+                    e.stopPropagation();
+                    deletePoll.mutate({ pollId: item.id });
+                  }}
+                />
+                <Link
+                  href={`/results/${item.link}`}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {" "}
+                  <Button className=" gap-2" variant={"outline"} type="submit">
+                    <BiPoll />
+                    Ergebnisse
+                  </Button>
+                </Link>
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
