@@ -17,12 +17,13 @@ model Poll {
     question    String
     choices     Choice[]
 
-    createdAt  DateTime @default(now())
-    updatedAt  DateTime @default(now()) @updatedAt
-    expiredAt  DateTime
-    willExpire Boolean  @default(false)
-    userId     String
-    Vote       Vote[]
+    createdAt        DateTime @default(now())
+    updatedAt        DateTime @default(now()) @updatedAt
+    expiredAt        DateTime
+    willExpire       Boolean  @default(false)
+    userId           String
+    Vote             Vote[]
+    isMultipleChoice Boolean  @default(false)
 
     @@index([createdAt])
     @@index([link])
