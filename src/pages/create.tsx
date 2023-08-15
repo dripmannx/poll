@@ -29,6 +29,7 @@ import { api } from "~/utils/api";
 
 import { Check, MinusIcon } from "lucide-react";
 import Head from "next/head";
+import { Checkbox } from "~/components/ui/checkbox";
 import { Label } from "~/components/ui/label";
 import {
   Popover,
@@ -46,6 +47,7 @@ export const formSchema = z.object({
     message: "Frage muss mindestens 2 Zeichen lang sein",
   }),
   discription: z.string().optional(),
+  isMultipleChoice: z.boolean().default(true),
   choices: z
     .object({
       choicesText: z.string(),
@@ -72,6 +74,7 @@ export default function CreatePoll() {
       choices: [{ choicesText: "" }],
       expire: undefined,
       discription: "",
+      isMultipleChoice: false,
     },
   });
   const { mutate, data, isLoading } = api.pollRouter.createPoll.useMutation({
@@ -97,8 +100,8 @@ export default function CreatePoll() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-
-    mutate(values);
+    console.log(values);
+    //mutate(values);
   }
 
   return (
@@ -196,6 +199,26 @@ export default function CreatePoll() {
                       )}
                     />
 
+                    <FormField
+                      control={form.control}
+                      name="isMultipleChoice"
+                      render={({ field }) => (
+                        <FormItem className=" flex flex-row  items-center space-x-3 space-y-0 rounded-md border p-4 shadow">
+                          <FormControl>
+                            <Checkbox
+                              checked={field.value}
+                              onCheckedChange={field.onChange as any}
+                            />
+                          </FormControl>
+                          <div className="space-y-1 leading-none">
+                            <FormLabel>Mehrfachantworten erlauben?</FormLabel>
+                            <FormDescription>
+                              Benutzer können für mehrere Antworten abstimmen{" "}
+                            </FormDescription>
+                          </div>
+                        </FormItem>
+                      )}
+                    />
                     <div className="flex items-center space-x-2">
                       <Switch
                         checked={willExpireState}
@@ -241,7 +264,7 @@ export default function CreatePoll() {
                                 <Calendar
                                   mode="single"
                                   selected={field.value}
-                                  onSelect={field.onChange as any}
+                                  onSelect={field.onChange}
                                   disabled={(date: Date) => date < new Date()}
                                   initialFocus
                                 />
