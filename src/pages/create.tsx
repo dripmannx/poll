@@ -227,7 +227,6 @@ export default function CreatePoll() {
                     <div className="flex flex-row items-center space-x-3">
                       <Switch
                         checked={willExpireState}
-                        id="airplane-mode"
                         onCheckedChange={() =>
                           setWillExpireState((state) => !state)
                         }
