@@ -36,6 +36,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "~/components/ui/popover";
+import { Separator } from "~/components/ui/separator";
 import Spinner, { LoadingSpinner } from "~/components/ui/spinner";
 import { Switch } from "~/components/ui/switch";
 import { Textarea } from "~/components/ui/textarea";
@@ -50,10 +51,12 @@ export const formSchema = z.object({
   isMultipleChoice: z.boolean().default(false),
   choices: z
     .object({
-      choicesText: z.string(),
+      choicesText: z
+        .string()
+        .min(2, { message: "Frage muss Mindestens 2 Zeichen Lang sein" }),
     })
     .array()
-    .min(2, { message: "Mindestens 2 Antwort Optionen" }),
+    .min(2, { message: "Erstelle Mindestens 2 Antwort Optionen" }),
   expire: z.date().optional(),
 });
 export default function CreatePoll() {
@@ -103,14 +106,14 @@ export default function CreatePoll() {
     //console.log(values);
     mutate(values);
   }
-
+  console.log(form.formState.errors);
   return (
     <>
       <Head>
         <title>Neue Umfrage erstellen</title>
       </Head>
-      <div className="container mt-5 flex  justify-center">
-        <Card className="w-[99%]  ">
+      <div className="mt-5 flex justify-center lg:container">
+        <Card className="w-full">
           <CardHeader>
             <CardTitle>Neue Umfrage erstellen</CardTitle>
             <CardDescription>
@@ -198,16 +201,17 @@ export default function CreatePoll() {
                         </FormItem>
                       )}
                     />
-
+                    <Separator />
+                    <div className="mt-5 text-lg">Einstellungen</div>
                     <FormField
                       control={form.control}
                       name="isMultipleChoice"
                       render={({ field }) => (
-                        <FormItem className=" flex flex-row  items-center space-x-3 space-y-0 rounded-md border p-4 shadow">
+                        <FormItem className=" flex flex-row  items-center space-x-3 space-y-0  shadow">
                           <FormControl>
-                            <Checkbox
+                            <Switch
                               checked={field.value}
-                              onCheckedChange={field.onChange as any}
+                              onCheckedChange={field.onChange}
                             />
                           </FormControl>
                           <div className="space-y-1 leading-none">
@@ -219,7 +223,8 @@ export default function CreatePoll() {
                         </FormItem>
                       )}
                     />
-                    <div className="flex items-center space-x-2">
+
+                    <div className="flex flex-row items-center space-x-3">
                       <Switch
                         checked={willExpireState}
                         id="airplane-mode"
@@ -227,9 +232,13 @@ export default function CreatePoll() {
                           setWillExpireState((state) => !state)
                         }
                       />
-                      <Label htmlFor="airplane-mode">
-                        Ablaufdatum festlegen{" "}
-                      </Label>
+                      <div className="space-y-1 leading-none">
+                        <FormLabel>Ablaufdatum festlegen</FormLabel>
+                        <FormDescription>
+                          Wähle das Datum, an dem die Umfrage abläuft oder lasse
+                          dieses Feld leer
+                        </FormDescription>
+                      </div>
                     </div>
                     {willExpireState && (
                       <FormField
@@ -270,10 +279,7 @@ export default function CreatePoll() {
                                 />
                               </PopoverContent>
                             </Popover>
-                            <FormDescription>
-                              Wähle das Datum, an dem die Umfrage abläuft oder
-                              lasse dieses Feld leer
-                            </FormDescription>
+
                             <FormMessage />
                           </FormItem>
                         )}

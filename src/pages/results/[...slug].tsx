@@ -39,7 +39,7 @@ const PollResults = () => {
   if (data)
     return (
       <>
-        <div className="container mt-5 ">
+        <div className="mt-5 lg:container ">
           {isLoading && <Spinner />}
 
           <React.Fragment key={data.id}>

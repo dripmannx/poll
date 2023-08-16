@@ -106,7 +106,7 @@ export const Poll = () => {
       <Head>
         <title>{data?.question}</title>
       </Head>
-      <div className="container mt-5 ">
+      <div className="mt-5 lg:container ">
         <Card className={`text-2xl`}>
           <CardHeader>
             <CardTitle>{data?.question}</CardTitle>

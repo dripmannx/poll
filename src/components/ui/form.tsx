@@ -4,6 +4,7 @@ import * as React from "react";
 import {
   Controller,
   ControllerProps,
+  FieldError,
   FieldPath,
   FieldValues,
   FormProvider,
@@ -11,6 +12,7 @@ import {
 } from "react-hook-form";
 
 import { Label } from "src/components/ui/label";
+import { isArray } from "util";
 import { cn } from "../../utils/utils";
 
 const Form = FormProvider;
@@ -146,7 +148,7 @@ const FormMessage = React.forwardRef<
   React.HTMLAttributes<HTMLParagraphElement>
 >(({ className, children, ...props }, ref) => {
   const { error, formMessageId } = useFormField();
-  const body = error ? String(error?.message) : children;
+  let body = error ? String(error?.message) : children;
 
   if (!body) {
     return null;
