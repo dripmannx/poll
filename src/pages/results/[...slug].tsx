@@ -15,8 +15,16 @@ import { Skeleton } from "~/components/ui/skeleton";
 
 import { Choice } from "@prisma/client";
 import "dayjs/locale/de";
+
+import { ApiError } from "next/dist/server/api-utils";
 import { AiOutlineCheck } from "react-icons/ai";
 import { BsClipboard2 } from "react-icons/bs";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "~/components/ui/accordion";
 import { Label } from "~/components/ui/label";
 import { Progress } from "~/components/ui/progress";
 import { Separator } from "~/components/ui/separator";
@@ -69,6 +77,7 @@ const PollResults = () => {
                 <ClipBoard linkToCopy={`https://dripmann.de/${data.link}`} />{" "}
               </CardContent>
             </Card>
+            {/* <UsersWhoVoted pollId={id} /> */}
           </React.Fragment>
         </div>
       </>
@@ -200,5 +209,35 @@ const BarChart = ({ poll }: TBarChartProps) => {
         Stimmen insgesamt: {votesCount}
       </div>
     </div>
+  );
+};
+
+type Props = { pollId: string };
+
+export const UsersWhoVoted = ({ pollId }: Props) => {
+  const Users = api.pollRouter.getUsersWhoVotedForPoll.useQuery(
+    { pollId: pollId },
+    { enabled: pollId ? true : false, retry: false }
+  );
+  if (Users.isError) return null;
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>User</CardTitle>
+        <CardDescription>
+          Alle User die bei deiner Umfrage abgestimmt haben
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Accordion type="single" collapsible className="w-full">
+          <AccordionItem value="item-1">
+            <AccordionTrigger>Is it accessible?</AccordionTrigger>
+            <AccordionContent>
+              Yes. It adheres to the WAI-ARIA design pattern.
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      </CardContent>
+    </Card>
   );
 };

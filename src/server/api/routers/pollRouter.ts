@@ -177,4 +177,43 @@ export const pollRouter = createTRPCRouter({
         });
       });
     }),
+  getUsersWhoVotedForPoll: privateProcedure
+    .input(z.object({ pollId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const poll = ctx.prisma.poll
+        .findUniqueOrThrow({
+          where: { link: input.pollId },
+        })
+        .catch(() => {
+          throw new TRPCError({
+            message: "Umfrage Existiert nicht",
+            code: "INTERNAL_SERVER_ERROR",
+          });
+        });
+
+      // Getting the UserId from the Poll to Check if the Sessison User is the Creator of the poll
+      const pollUserId = await poll.then((res) => res.userId);
+
+      // Compare the userID of the Poll with the userID from the session
+      if (pollUserId !== ctx.userId) {
+        throw new TRPCError({
+          message:
+            "Access denied: You are not authorized to view this poll's votes.",
+          code: "FORBIDDEN",
+        });
+      }
+      const votes = ctx.prisma.vote
+        .findMany({
+          where: { pollId: input.pollId },
+          select: { userId: true },
+        })
+        .catch(() => {
+          throw new TRPCError({
+            message: "Umfrage Existiert nicht",
+            code: "INTERNAL_SERVER_ERROR",
+          });
+        });
+
+      // If the user is authorized, return the poll
+    }),
 });

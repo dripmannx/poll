@@ -86,9 +86,7 @@ export default function CreatePoll() {
         title: "Umfrage erfolgreich erstellet",
         description: "Frage: " + result.question,
       });
-      setTimeout(() => {
-        setIsSuccess(true);
-      }, 3000);
+
       return router.push(`/${result.link}`);
     },
   });
@@ -295,7 +293,6 @@ export default function CreatePoll() {
                           type="submit"
                         >
                           {isLoading && <LoadingSpinner />}
-                          {isSuccess && <Check color="black" />}
                           Umfrage erstellen
                         </Button>
                       </div>
