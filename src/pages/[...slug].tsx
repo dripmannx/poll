@@ -30,17 +30,23 @@ import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
 import Spinner from "~/components/ui/spinner";
 import { toast } from "~/components/ui/use-toast";
 import { api } from "~/utils/api";
-type Props = { id: string };
+import RadioGroupMultipleChoice from "../components/ui/radioGroupMultipleChoice";
+
 type EnumOption = {
   id: string;
   choiceText: string;
 };
 
 const FormSchema = z.object({
-  id: z.string(),
+  choicesIds: z.string().array(),
 });
 
 export const Poll = () => {
+  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+
+  const handleSelectionChange = (newSelectedOptions: string[]) => {
+    setSelectedOptions(newSelectedOptions);
+  };
   const [enumOptions, setEnumOptions] = useState<EnumOption[]>([]);
   const router = useRouter();
 
@@ -73,7 +79,7 @@ export const Poll = () => {
     },
   });
   function onSubmit(values: z.infer<typeof FormSchema>) {
-    if (data) mutate({ id: values.id, pollId: data?.id });
+    if (data) mutate({ choicesIds: selectedOptions, pollId: data?.id });
   }
 
   useEffect(() => {
@@ -86,11 +92,15 @@ export const Poll = () => {
       setEnumOptions(extractedOptions);
     }
     // Fetch the enum options when the component mounts
-  }, [data]);
+
+    form.setValue("choicesIds", selectedOptions);
+    //Push to Link if poll is Created
+  }, [data, selectedOptions]);
 
   if (isError) {
     return <NotFound />;
   }
+  console.log(data);
   return (
     <>
       <Head>
@@ -115,36 +125,25 @@ export const Poll = () => {
                 >
                   <FormField
                     control={form.control}
-                    name="id"
+                    name="choicesIds"
                     render={({ field }) => (
                       <FormItem className="space-y-3">
                         <FormLabel>Wähle eine Antwort aus</FormLabel>
                         <FormControl>
-                          <RadioGroup
-                            aria-multiselectable
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                            className="flex flex-col space-y-1"
-                          >
-                            {enumOptions.map((option) => (
-                              <FormItem
-                                key={option.id}
-                                className="flex items-center space-x-3 space-y-0"
-                              >
-                                <FormControl>
-                                  <RadioGroupItem value={option.id} />
-                                </FormControl>
-                                <FormLabel className="font-normal">
-                                  {option.choiceText}
-                                </FormLabel>
-                              </FormItem>
-                            ))}
-                          </RadioGroup>
+                          <RadioGroupMultipleChoice
+                            isMultipleChoice={
+                              data.isMultipleChoice ? true : false
+                            }
+                            options={enumOptions}
+                            selectedOptions={selectedOptions}
+                            onChange={handleSelectionChange}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
+
                   <Button type="submit">Abstimmen</Button>
                   <Link href={`/results/${data.link}`}>
                     {" "}

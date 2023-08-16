@@ -47,6 +47,7 @@ export const pollRouter = createTRPCRouter({
         expire: z.date().optional(),
         choices: z.object({ choicesText: z.string() }).array(),
         discription: z.string().optional(),
+        isMultipleChoice: z.boolean(),
       })
     )
     .output(
@@ -72,6 +73,7 @@ export const pollRouter = createTRPCRouter({
           discription: input.discription,
           expiredAt: input.expire ? input.expire : b.toDate(),
           willExpire: input.expire ? false : true,
+          isMultipleChoice: input.isMultipleChoice,
           choices: {
             createMany: {
               data: input.choices.map((choice) => ({
@@ -87,7 +89,7 @@ export const pollRouter = createTRPCRouter({
   createVote: privateProcedure
     .input(
       z.object({
-        id: z.string(),
+        choicesIds: z.string().array(),
         pollId: z.string(),
       })
     )
@@ -121,12 +123,12 @@ export const pollRouter = createTRPCRouter({
           message: "Du hast bereits abgestimmt",
         });
       }
-      await ctx.prisma.vote.create({
-        data: {
-          userId: ctx.userId,
-          choiceId: input.id,
+      await ctx.prisma.vote.createMany({
+        data: input.choicesIds.map((id) => ({
+          choiceId: id,
           pollId: input.pollId,
-        },
+          userId: ctx.userId,
+        })),
       });
 
       return { id: poll.link };

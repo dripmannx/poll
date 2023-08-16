@@ -47,7 +47,7 @@ export const formSchema = z.object({
     message: "Frage muss mindestens 2 Zeichen lang sein",
   }),
   discription: z.string().optional(),
-  isMultipleChoice: z.boolean().default(true),
+  isMultipleChoice: z.boolean().default(false),
   choices: z
     .object({
       choicesText: z.string(),
