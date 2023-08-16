@@ -100,7 +100,7 @@ export const Poll = () => {
   if (isError) {
     return <NotFound />;
   }
-  console.log(data);
+
   return (
     <>
       <Head>

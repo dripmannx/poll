@@ -40,6 +40,35 @@ export const pollRouter = createTRPCRouter({
 
     return polls;
   }),
+  getPollByUserIdWithCount: privateProcedure.query(async ({ ctx, input }) => {
+    const pollsWithUniqueVotersCount = await ctx.prisma.poll.findMany({
+      select: {
+        id: true,
+        question: true,
+        choices: true,
+        createdAt: true,
+        updatedAt: true,
+        userId: true,
+        isMultipleChoice: true,
+        discription: true,
+        expiredAt: true,
+        willExpire: true,
+        link: true,
+        Vote: {
+          select: {
+            userId: true,
+          },
+        },
+      },
+    });
+
+    const pollsWithVotesCount = pollsWithUniqueVotersCount.map((poll) => ({
+      pollInfo: poll,
+      uniqueVotersCount: new Set(poll.Vote.map((vote) => vote.userId)).size,
+    }));
+
+    return pollsWithVotesCount;
+  }),
   createPoll: privateProcedure
     .input(
       z.object({
@@ -177,6 +206,7 @@ export const pollRouter = createTRPCRouter({
         });
       });
     }),
+
   getUsersWhoVotedForPoll: privateProcedure
     .input(z.object({ pollId: z.string() }))
     .query(async ({ ctx, input }) => {
@@ -214,6 +244,19 @@ export const pollRouter = createTRPCRouter({
           });
         });
 
+      // If the user is authorized, return the poll
+    }),
+  CountUsersWhoVotedInPoll: privateProcedure
+    .input(z.object({ pollId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      return await ctx.prisma.vote.count({
+        where: {
+          poll: {
+            link: input.pollId,
+          },
+        },
+        distinct: ["userId"],
+      });
       // If the user is authorized, return the poll
     }),
 });

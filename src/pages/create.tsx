@@ -104,7 +104,7 @@ export default function CreatePoll() {
     //console.log(values);
     mutate(values);
   }
-  console.log(form.formState.errors);
+
   return (
     <>
       <Head>
