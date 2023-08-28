@@ -100,7 +100,7 @@ export const pollRouter = createTRPCRouter({
           question: input.question,
 
           discription: input.discription,
-          expiredAt: input.expire ? input.expire : b.toDate(),
+          expiredAt: input.expire === undefined ? "" : input.expire,
           willExpire: input.expire ? false : true,
           isMultipleChoice: input.isMultipleChoice,
           choices: {
