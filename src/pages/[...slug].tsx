@@ -38,7 +38,10 @@ type EnumOption = {
 };
 
 const FormSchema = z.object({
-  choicesIds: z.string().array(),
+  choicesIds: z
+    .string()
+    .array()
+    .min(1, { message: "Mindestens eine Option auswählen" }),
 });
 
 export const Poll = () => {
@@ -118,46 +121,65 @@ export const Poll = () => {
                 <Spinner />
               </div>
             ) : (
-              <Form {...form}>
-                <form
-                  onSubmit={form.handleSubmit(onSubmit)}
-                  className="w-2/3 space-y-6"
-                >
-                  <FormField
-                    control={form.control}
-                    name="choicesIds"
-                    render={({ field }) => (
-                      <FormItem className="space-y-3">
-                        <FormLabel>Wähle eine Antwort aus</FormLabel>
-                        <FormControl>
-                          <RadioGroupMultipleChoice
-                            isMultipleChoice={
-                              data.isMultipleChoice ? true : false
-                            }
-                            options={enumOptions}
-                            selectedOptions={selectedOptions}
-                            onChange={handleSelectionChange}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+              <>
+                {new Date() > data?.expiredAt && (
+                  <div className="my-5">
+                    <Alert variant="destructive">
+                      <ExclamationTriangleIcon className="h-4 w-4" />
+                      <AlertTitle>Achtung</AlertTitle>
+                      <AlertDescription>
+                        {"Diese Umfrage ist abgelaufen"}
+                      </AlertDescription>
+                    </Alert>
+                  </div>
+                )}
+                <Form {...form}>
+                  <form
+                    onSubmit={form.handleSubmit(onSubmit)}
+                    className="w-2/3 space-y-6"
+                  >
+                    <FormField
+                      control={form.control}
+                      name="choicesIds"
+                      render={({ field }) => (
+                        <FormItem className="space-y-3">
+                          <FormLabel>Wähle eine Antwort aus</FormLabel>
+                          <FormControl>
+                            <RadioGroupMultipleChoice
+                              isMultipleChoice={
+                                data.isMultipleChoice ? true : false
+                              }
+                              options={enumOptions}
+                              selectedOptions={selectedOptions}
+                              onChange={handleSelectionChange}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                  <Button type="submit">Abstimmen</Button>
-                  <Link href={`/results/${data.link}`}>
-                    {" "}
                     <Button
-                      className=" gap-2"
-                      variant={"outline"}
+                      disabled={new Date() > data.expiredAt}
                       type="submit"
                     >
-                      <BiPoll />
-                      Ergebnisse
+                      Abstimmen
                     </Button>
-                  </Link>
-                </form>
-              </Form>
+
+                    <Link href={`/results/${data.link}`}>
+                      {" "}
+                      <Button
+                        className=" gap-2"
+                        variant={"outline"}
+                        type="submit"
+                      >
+                        <BiPoll />
+                        Ergebnisse
+                      </Button>
+                    </Link>
+                  </form>
+                </Form>
+              </>
             )}
             {mutateIsError && (
               <div className="my-5">
