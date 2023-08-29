@@ -19,7 +19,7 @@ model Poll {
 
     createdAt        DateTime @default(now())
     updatedAt        DateTime @default(now()) @updatedAt
-    expiredAt        DateTime
+    expiredAt        DateTime @default(now())
     willExpire       Boolean  @default(false)
     userId           String
     Vote             Vote[]
