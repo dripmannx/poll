@@ -83,15 +83,13 @@ const MyPolls = () => {
   const handleMouseLeave = () => {
     setShowIcon(false);
   };
+
   const {
     data,
     isLoading,
-    isError,
     error: pollError,
-  } = api.pollRouter.getPollByUserId.useQuery();
-
-  const { data: PollVotes } =
-    api.pollRouter.getPollByUserIdWithCount.useQuery();
+    isError,
+  } = api.pollRouter.getPollByUserIdWithCount.useQuery();
 
   const router = useRouter();
 
@@ -111,7 +109,7 @@ const MyPolls = () => {
       title: deletePoll.error?.message,
     });
   }, [deletePoll.isError]);
-  console.log(PollVotes);
+
   return (
     <>
       <Head>
@@ -199,7 +197,7 @@ const MyPolls = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {PollVotes?.map((poll) => (
+              {data?.map((poll) => (
                 <TableRow
                   className="cursor-pointer"
                   key={poll.pollInfo.id}
