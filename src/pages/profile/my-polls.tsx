@@ -184,76 +184,78 @@ const MyPolls = () => {
             </Card>
           ))}
         </div> */}
-        <div className="mt-5 rounded-xl border p-2">
-          <Table>
-            <TableCaption>Alle Deine Umfragen an einem Ort</TableCaption>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[50%]">Umfragen</TableHead>
-                <TableHead className="text-center">Teilnehmer</TableHead>
+        {data?.length !== 0 && !isLoading && (
+          <div className="mt-5 rounded-xl border p-2">
+            <Table>
+              <TableCaption>Alle Deine Umfragen an einem Ort</TableCaption>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[50%]">Umfragen</TableHead>
+                  <TableHead className="text-center">Teilnehmer</TableHead>
 
-                <TableHead className="text-center">Deadline</TableHead>
-                <TableHead className="text-right">Menü</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {data?.map((poll) => (
-                <TableRow
-                  className="cursor-pointer"
-                  key={poll.pollInfo.id}
-                  onClick={() => router.push(`/${poll.pollInfo.link}`)}
-                >
-                  <TableCell className="w-[50%] font-medium">
-                    <div className="flex flex-row items-center gap-2">
-                      {" "}
-                      <AiFillPieChart size={"2em"} />
-                      <div className="flex flex-col">
-                        <span>{poll.pollInfo.question}</span>
+                  <TableHead className="text-center">Deadline</TableHead>
+                  <TableHead className="text-right">Menü</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {data?.map((poll) => (
+                  <TableRow
+                    className="cursor-pointer"
+                    key={poll.pollInfo.id}
+                    onClick={() => router.push(`/${poll.pollInfo.link}`)}
+                  >
+                    <TableCell className="w-[50%] font-medium">
+                      <div className="flex flex-row items-center gap-2">
+                        {" "}
+                        <AiFillPieChart size={"2em"} />
+                        <div className="flex flex-col">
+                          <span>{poll.pollInfo.question}</span>
 
-                        <span className="text-gray-400">
-                          {poll.pollInfo.createdAt.toLocaleDateString()}
-                        </span>
+                          <span className="text-gray-400">
+                            {poll.pollInfo.createdAt.toLocaleDateString()}
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                  </TableCell>
-                  <TableCell className=" text-center">
-                    {poll.uniqueVotersCount}
-                  </TableCell>
-                  <TableCell className="text-center">
-                    {poll.pollInfo.willExpire
-                      ? poll.pollInfo.expiredAt.toLocaleDateString()
-                      : "-"}{" "}
-                  </TableCell>
-                  <TableCell className=" flex justify-end">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger className="cursor-pointer">
-                        <GoKebabHorizontal size={"2em"} />
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent>
-                        <DropdownMenuLabel>Aktionen</DropdownMenuLabel>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            deletePoll.mutate({ pollId: poll.pollInfo.id });
-                          }}
-                          className="flex cursor-pointer gap-2"
-                        >
-                          <BsFillTrashFill color="red" size={"1.5em"} />
-                          Löschen
-                        </DropdownMenuItem>
-                        {/*  <DropdownMenuItem className="flex cursor-pointer gap-2">
+                    </TableCell>
+                    <TableCell className=" text-center">
+                      {poll.uniqueVotersCount}
+                    </TableCell>
+                    <TableCell className="text-center">
+                      {poll.pollInfo.willExpire
+                        ? poll.pollInfo.expiredAt.toLocaleDateString()
+                        : "-"}{" "}
+                    </TableCell>
+                    <TableCell className=" flex justify-end">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger className="cursor-pointer">
+                          <GoKebabHorizontal size={"2em"} />
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                          <DropdownMenuLabel>Aktionen</DropdownMenuLabel>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              deletePoll.mutate({ pollId: poll.pollInfo.id });
+                            }}
+                            className="flex cursor-pointer gap-2"
+                          >
+                            <BsFillTrashFill color="red" size={"1.5em"} />
+                            Löschen
+                          </DropdownMenuItem>
+                          {/*  <DropdownMenuItem className="flex cursor-pointer gap-2">
                           <MdEdit size={"1.5em"} />
                           Bearbeiten
                         </DropdownMenuItem> */}
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        )}
       </div>
     </>
   );
