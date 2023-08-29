@@ -101,7 +101,7 @@ export const pollRouter = createTRPCRouter({
 
           discription: input.discription,
           expiredAt: input.expire === undefined ? "" : input.expire,
-          willExpire: input.expire ? false : true,
+          willExpire: input.expire === undefined ? false : true,
           isMultipleChoice: input.isMultipleChoice,
           choices: {
             createMany: {
@@ -137,7 +137,13 @@ export const pollRouter = createTRPCRouter({
           message: "Umfrage existiert nicht",
         });
       }
-
+      const now = new Date();
+      if (now > (await poll.expiredAt)) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Diese Umfrage ist abgelaufen",
+        });
+      }
       // Check if the user has already voted for the poll
       const existingVote = await ctx.prisma.vote.findFirst({
         where: {
@@ -152,6 +158,7 @@ export const pollRouter = createTRPCRouter({
           message: "Du hast bereits abgestimmt",
         });
       }
+
       await ctx.prisma.vote.createMany({
         data: input.choicesIds.map((id) => ({
           choiceId: id,
