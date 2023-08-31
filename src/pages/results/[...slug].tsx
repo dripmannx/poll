@@ -57,7 +57,8 @@ const PollResults = () => {
                 <CardDescription>{data.discription} </CardDescription>
                 <CardDescription>
                   {data.choices?.length} Antwort Möglichkeiten ·{" "}
-                  {dayjs().to(data.createdAt)}
+                  {dayjs().to(data.createdAt)} · Deadline:{" "}
+                  {data.expiredAt.toLocaleDateString()}
                 </CardDescription>
               </CardHeader>{" "}
               <CardContent>
