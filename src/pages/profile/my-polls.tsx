@@ -188,8 +188,8 @@ const MyPolls = () => {
           ))}
         </div> */}
         {data?.length !== 0 && !isLoading && (
-          <div className="mt-5 w-full rounded-xl border p-2">
-            <Table className="border-none lg:border">
+          <div className="mt-5 w-full rounded-xl ">
+            <Table>
               <TableCaption>Alle Deine Umfragen an einem Ort</TableCaption>
               <TableHeader>
                 <TableRow>

@@ -103,7 +103,7 @@ export const Poll = () => {
   if (isError) {
     return <NotFound />;
   }
-
+  console.log(data);
   return (
     <>
       <Head>
@@ -122,7 +122,7 @@ export const Poll = () => {
               </div>
             ) : (
               <>
-                {new Date() > data?.expiredAt && (
+                {new Date() > data?.expiredAt && data.willExpire && (
                   <div className="my-5">
                     <Alert variant="destructive">
                       <ExclamationTriangleIcon className="h-4 w-4" />
@@ -160,7 +160,7 @@ export const Poll = () => {
                     />
 
                     <Button
-                      disabled={new Date() > data.expiredAt}
+                      disabled={new Date() > data.expiredAt && data.willExpire}
                       type="submit"
                     >
                       Abstimmen
