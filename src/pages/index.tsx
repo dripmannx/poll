@@ -52,7 +52,7 @@ const LandingPage = () => {
                     data-aos-delay="150"
                   >
                     Erstelle jetzt innerhalb Sekunden eine Umfrage und teile Sie
-                    mit deinen Freunden oder Veröffentliche sie, damit Menschen
+                    mit deinen Freunden oder veröffentliche sie, damit Menschen
                     auf der ganzen Welt abstimmen können
                   </p>
                   <div

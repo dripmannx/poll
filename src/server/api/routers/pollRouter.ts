@@ -139,7 +139,7 @@ export const pollRouter = createTRPCRouter({
         });
       }
       const now = new Date();
-      if (now > (await poll.expiredAt)) {
+      if (now > poll.expiredAt && poll.willExpire) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message: "Diese Umfrage ist abgelaufen",
