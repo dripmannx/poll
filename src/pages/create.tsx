@@ -368,7 +368,7 @@ export const DynamicInputs = ({
         onClick={addInput}
       >
         <PlusIcon />
-        Add Input
+        Möglichkeit hinzufügen
       </Button>
     </div>
   );
