@@ -109,7 +109,10 @@ const MyPolls = () => {
       title: deletePoll.error?.message,
     });
   }, [deletePoll.isError]);
-
+  console.log(data);
+  console.log(
+    "user_2SkArlnQjGq3eSAqLOwp8U51ali" === "user_2SkArlnQjGq3eSAqLOwp8U51ali"
+  );
   return (
     <>
       <Head>
@@ -123,7 +126,7 @@ const MyPolls = () => {
         />
         <title>Meine Umfragen</title>
       </Head>
-      <div className="container mt-5">
+      <div className="mt-5 lg:container">
         {isLoading && <Spinner />}
         {data?.length === 0 && <NoPolls />}{" "}
         {/* <div className=" grid grid-cols-3 gap-4">
@@ -185,8 +188,8 @@ const MyPolls = () => {
           ))}
         </div> */}
         {data?.length !== 0 && !isLoading && (
-          <div className="mt-5 rounded-xl border p-2">
-            <Table>
+          <div className="mt-5 w-full rounded-xl border p-2">
+            <Table className="border-none lg:border">
               <TableCaption>Alle Deine Umfragen an einem Ort</TableCaption>
               <TableHeader>
                 <TableRow>

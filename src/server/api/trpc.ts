@@ -7,13 +7,16 @@
  * need to use are documented accordingly near the end.
  */
 import { getAuth } from "@clerk/nextjs/server";
-import { TRPCError, initTRPC } from "@trpc/server";
+import { TRPCError, inferAsyncReturnType, initTRPC } from "@trpc/server";
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
+import { NodeHTTPCreateContextFnOptions } from "@trpc/server/dist/adapters/node-http";
+import { IncomingMessage } from "http";
 import { json } from "stream/consumers";
 import superjson from "superjson";
 import { ZodError } from "zod";
-import { prisma } from "~/server/db";
 
+import ws from "ws";
+import { prisma } from "~/server/db";
 /**
  * 1. CONTEXT
  *
@@ -112,3 +115,22 @@ const enforceUserIsAuthed = t.middleware(async ({ ctx, next }) => {
 });
 
 export const privateProcedure = t.procedure.use(enforceUserIsAuthed);
+/* 
+export const createContext = async (
+  opts:
+    | NodeHTTPCreateContextFnOptions<IncomingMessage, ws>
+    | CreateNextContextOptions,
+) => {
+ 
+  const { req } = opts;
+  const session = getAuth(req);
+  console.log('createContext for', session?.user?.emailAddresses ?? 'unknown user');
+
+  return {
+    session,
+  };
+}; 
+
+
+
+export type Context = inferAsyncReturnType<typeof createContext>;*/
