@@ -42,6 +42,7 @@ export const pollRouter = createTRPCRouter({
   }),
   getPollByUserIdWithCount: privateProcedure.query(async ({ ctx, input }) => {
     const pollsWithUniqueVotersCount = await ctx.prisma.poll.findMany({
+      where: { userId: ctx.userId },
       select: {
         id: true,
         question: true,
