@@ -57,14 +57,14 @@ const PollResults = () => {
                 <CardDescription>{data.discription} </CardDescription>
                 <CardDescription>
                   {data.choices?.length} Antwort Möglichkeiten ·{" "}
-                  {dayjs().to(data.createdAt)} · Deadline:{" "}
+                  {dayjs().to(data.createdAt)}{" "}
+                  {data.willExpire && "· Deadline:"}{" "}
                   {data.willExpire && data.expiredAt.toLocaleDateString()}
                 </CardDescription>
               </CardHeader>{" "}
               <CardContent>
                 <div className=" flex flex-col gap-y-5 lg:flex-row">
                   <BarChart poll={data} />
-
                   <ChartComp poll={data} />
                 </div>
               </CardContent>
