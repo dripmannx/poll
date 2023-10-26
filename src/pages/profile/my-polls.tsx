@@ -79,7 +79,7 @@ const MyPolls = () => {
   });
   const [showIcon, setShowIcon] = useState(false);
 
-  const resp = useClerkQuery(`https://api.clerk.com/v1/users/${user.userId}/oauth_access_tokens/oauth_google/`);
+  const resp = useClerkQuery(`https://api.clerk.com/v1/users/${user.userId}/oauth_access_tokens/oauth_spotify`);
   console.log(resp.data);
   const handleMouseEnter = () => {
     setShowIcon(true);

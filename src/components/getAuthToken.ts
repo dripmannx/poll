@@ -5,6 +5,7 @@ export default function useClerkQuery(url: string) {
   const { getToken } = useAuth();
 
   return useQuery([url], async () => {
+    console.log(await getToken())
     const res = await fetch(url, {
       headers: { Authorization: `Bearer ${await getToken()}` },
     });
