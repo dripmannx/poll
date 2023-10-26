@@ -7,6 +7,7 @@ import { Metadata } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { env } from "process";
 import React, { useEffect, useState } from "react";
 import { AiFillPieChart } from "react-icons/ai";
 import { BiPoll } from "react-icons/bi";
@@ -81,6 +82,7 @@ const MyPolls = () => {
 
   const token = api.pollRouter.getUserAccessToken.useQuery();
   console.log("token", token.data)
+  console.log(env.NODE_ENV)
   const handleMouseEnter = () => {
     setShowIcon(true);
   };

@@ -54,7 +54,7 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
   return {
     prisma,
     userId,
-    token: "sk_live_slW91hjNOU2YlCsMf9ipreq25GARF8czFywgbceKhX"
+    token: "sk_test_KWlkmj3aypPF3P7BswjmusiDCe9ZMlqMgDzCICVZmR"
   };
 };
 
