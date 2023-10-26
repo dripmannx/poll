@@ -16,8 +16,10 @@ import superjson from "superjson";
 import { ZodError } from "zod";
 
 import { auth } from "@clerk/nextjs";
+import { env } from "process";
 import ws from "ws";
 import { prisma } from "~/server/db";
+
 /**
  * 1. CONTEXT
  *
@@ -50,11 +52,11 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
   const sesh = getAuth(req);
 
   const userId = sesh.userId;
-  const token = await sesh.getToken()
+
   return {
     prisma,
     userId,
-    token: "sk_test_KWlkmj3aypPF3P7BswjmusiDCe9ZMlqMgDzCICVZmR"
+    token: env.CLERK_SECRET_KEY,
   };
 };
 
