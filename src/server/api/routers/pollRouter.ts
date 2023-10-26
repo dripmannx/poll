@@ -1,7 +1,9 @@
 import { TRPCError } from "@trpc/server";
+import axios from "axios";
 import { privateDecrypt } from "crypto";
 import dayjs from "dayjs";
 import { customAlphabet, nanoid } from "nanoid";
+import { copyTracedFiles } from "next/dist/build/utils";
 import superjson from "superjson";
 import { number, z } from "zod";
 
@@ -39,6 +41,13 @@ export const pollRouter = createTRPCRouter({
     });
 
     return polls;
+  }),
+  getUserAccessToken: privateProcedure.query(async ({ ctx, input }) => {
+    const accessToken = fetch(
+      `https://api.clerk.com/v1/users/${ctx.userId}/oauth_access_tokens/oauth_google/`
+    ).then((res) => res.json());
+
+    return { accessToken };
   }),
   getPollByUserIdWithCount: privateProcedure.query(async ({ ctx, input }) => {
     const pollsWithUniqueVotersCount = await ctx.prisma.poll.findMany({

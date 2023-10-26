@@ -1,3 +1,4 @@
+import { useAuth, useSignUp } from "@clerk/nextjs";
 import { GetResult } from "@prisma/client/runtime/library";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import dayjs from "dayjs";
@@ -13,6 +14,7 @@ import { BsFillTrashFill } from "react-icons/bs";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { GoKebabHorizontal } from "react-icons/go";
 import { MdEdit } from "react-icons/md";
+import useClerkQuery from "~/components/getAuthToken";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import {
   AlertDialog,
@@ -63,6 +65,7 @@ export const metadata: Metadata = {
 };
 
 const MyPolls = () => {
+  const user = useAuth()
   const utils = api.useContext();
   const deletePoll = api.pollRouter.deletePoll.useMutation({
     onSuccess(data, variables, context) {
@@ -76,6 +79,8 @@ const MyPolls = () => {
   });
   const [showIcon, setShowIcon] = useState(false);
 
+  const resp = useClerkQuery(`https://api.clerk.com/v1/users/${user.userId}/oauth_access_tokens/oauth_google/`);
+  console.log(resp.data);
   const handleMouseEnter = () => {
     setShowIcon(true);
   };
@@ -109,10 +114,7 @@ const MyPolls = () => {
       title: deletePoll.error?.message,
     });
   }, [deletePoll.isError]);
-  console.log(data);
-  console.log(
-    "user_2SkArlnQjGq3eSAqLOwp8U51ali" === "user_2SkArlnQjGq3eSAqLOwp8U51ali"
-  );
+
   return (
     <>
       <Head>
