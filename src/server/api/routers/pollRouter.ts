@@ -48,7 +48,7 @@ export const pollRouter = createTRPCRouter({
   getUserAccessToken: privateProcedure.query(async ({ ctx, input }) => {
 
     const resp = await fetch(`https://api.clerk.com/v1/users/${ctx.userId}/oauth_access_tokens/oauth_google`,
-      { headers: { Authorization: `Bearer ${ctx.token}`, } }).then(res => res.json().then(res => res));
+      { mode: "no-cors", headers: { Authorization: `Bearer ${ctx.token}`, } }).then(res => res.json().then(res => res));
 
 
     return { resp }
