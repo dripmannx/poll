@@ -79,8 +79,8 @@ const MyPolls = () => {
   });
   const [showIcon, setShowIcon] = useState(false);
 
-  const resp = useClerkQuery(`https://api.clerk.com/v1/users/${user.userId}/oauth_access_tokens/oauth_spotify`);
-  console.log(resp.data);
+  const token = api.pollRouter.getUserAccessToken.useQuery();
+  console.log("token", token.data)
   const handleMouseEnter = () => {
     setShowIcon(true);
   };
@@ -118,7 +118,7 @@ const MyPolls = () => {
   return (
     <>
       <Head>
-        {" "}
+
         <meta property="og:title" content="Meine Umfragen" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://dripmann.de/" />
@@ -130,7 +130,7 @@ const MyPolls = () => {
       </Head>
       <div className="mt-5 lg:container">
         {isLoading && <Spinner />}
-        {data?.length === 0 && <NoPolls />}{" "}
+        {data?.length === 0 && <NoPolls />}
         {/* <div className=" grid grid-cols-3 gap-4">
           {data?.map((item) => (
             <Card

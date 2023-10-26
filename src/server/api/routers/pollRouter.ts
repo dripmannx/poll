@@ -1,11 +1,14 @@
+import { useAuth } from "@clerk/nextjs";
 import { TRPCError } from "@trpc/server";
 import axios from "axios";
 import { privateDecrypt } from "crypto";
 import dayjs from "dayjs";
+import { AwardIcon } from "lucide-react";
 import { customAlphabet, nanoid } from "nanoid";
 import { copyTracedFiles } from "next/dist/build/utils";
 import superjson from "superjson";
 import { number, z } from "zod";
+import useClerkQuery from "~/components/getAuthToken";
 
 import {
   createTRPCRouter,
@@ -43,11 +46,12 @@ export const pollRouter = createTRPCRouter({
     return polls;
   }),
   getUserAccessToken: privateProcedure.query(async ({ ctx, input }) => {
-    const accessToken = fetch(
-      `https://api.clerk.com/v1/users/${ctx.userId}/oauth_access_tokens/oauth_google/`
-    ).then((res) => res.json());
 
-    return { accessToken };
+    const resp = await fetch(`https://api.clerk.com/v1/users/${ctx.userId}/oauth_access_tokens/oauth_google`,
+      { headers: { Authorization: `Bearer ${ctx.token}`, } }).then(res => res.json().then(res => res));
+
+
+    return { resp }
   }),
   getPollByUserIdWithCount: privateProcedure.query(async ({ ctx, input }) => {
     const pollsWithUniqueVotersCount = await ctx.prisma.poll.findMany({

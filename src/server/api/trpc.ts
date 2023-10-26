@@ -15,6 +15,7 @@ import { json } from "stream/consumers";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
+import { auth } from "@clerk/nextjs";
 import ws from "ws";
 import { prisma } from "~/server/db";
 /**
@@ -44,14 +45,16 @@ type CreateContextOptions = Record<string, never>;
  *
  * @see https://trpc.io/docs/context
  */
-export const createTRPCContext = (opts: CreateNextContextOptions) => {
+export const createTRPCContext = async (opts: CreateNextContextOptions) => {
   const { req } = opts;
   const sesh = getAuth(req);
 
   const userId = sesh.userId;
+  const token = await sesh.getToken()
   return {
     prisma,
     userId,
+    token: "sk_live_slW91hjNOU2YlCsMf9ipreq25GARF8czFywgbceKhX"
   };
 };
 
@@ -109,6 +112,7 @@ const enforceUserIsAuthed = t.middleware(async ({ ctx, next }) => {
   return next({
     ctx: {
       userId: ctx.userId,
+      token: ctx.token
     },
   });
 });
