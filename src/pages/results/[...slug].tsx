@@ -13,10 +13,8 @@ import {
 import { Input } from "~/components/ui/input";
 import { Skeleton } from "~/components/ui/skeleton";
 
-import { Choice } from "@prisma/client";
 import "dayjs/locale/de";
 
-import { ApiError } from "next/dist/server/api-utils";
 import { AiOutlineCheck } from "react-icons/ai";
 import { BsClipboard2 } from "react-icons/bs";
 import {
